@@ -109,7 +109,7 @@ contract NftGame {
     function gameStarted(address _nftAddress, uint256 _nftId, address _nftAddressPlayer, uint256 _gameCost) external  onlyOwner noContract {
         if (gameStatus == true) revert NftGame__GameHasStarted();
         if (nftAddress != address(0)) revert NftGame__NftPrizeSet();
-        if (ERC721(_nftAddress).ownerOf(_nftId) == i_owner) revert NftGame__NftNotOwned();
+        if (ERC721(_nftAddress).ownerOf(_nftId) != i_owner) revert NftGame__NftNotOwned();
 
         gameCost = _gameCost;
         nftAddress = _nftAddress;
