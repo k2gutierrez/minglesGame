@@ -101,7 +101,7 @@ export default function Home() {
   async function getMingles () {
     const options = {
       method: 'GET',
-      url: `https://${chain == "11155111" ? "api-sepolia" : "api-apechain"}.reservoir.tools/users/${userAddress}/tokens/v10?contract=${process.env.NEXT_PUBLIC_MINGLE_CONTRACT}`,
+      url: `https://${chain == "11155111" ? "api-sepolia" : "api-apechain"}.reservoir.tools/users/${userAddress}/tokens/v10?contract=${ chain == "11155111" ? process.env.NEXT_PUBLIC_MINGLE_CONTRACT_SEPOLIA : process.env.NEXT_PUBLIC_MINGLE_CONTRACT_APECHAIN}}`,                
       headers: {accept: '*/*', 'x-api-key': process.env.NEXT_PUBLIC_RESERVOIR}
     };
     

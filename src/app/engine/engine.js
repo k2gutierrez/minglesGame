@@ -7,7 +7,7 @@ const externalProvider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCH
 export async function Sign(_nft, _wormLvl, signer) {
     if (_nft == null) return
     try {
-        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, signer)
+        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
         const signIn = await gameContract.register(_nft, _wormLvl, 0, "patio")
         return signIn
     } catch (e) {
@@ -18,7 +18,7 @@ export async function Sign(_nft, _wormLvl, signer) {
 export async function Choice(_nft, _location, signer) {
     if (_nft == null) return
     try {
-        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, signer)
+        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
         const choiceToSurvive = await gameContract.choice(_nft, _location)
         return choiceToSurvive
     } catch (e) {
@@ -29,7 +29,7 @@ export async function Choice(_nft, _location, signer) {
 export async function EscapeChoice(_nft, _location, signer) {
     if (_nft == null) return
     try {
-        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, signer)
+        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
         const choiceToEscape = await gameContract.escapeChoice(_nft, _location)
         return choiceToEscape
     } catch (e) {
@@ -40,7 +40,7 @@ export async function EscapeChoice(_nft, _location, signer) {
 export async function GetUser(_nft, provider) {
     if (_nft == null) return
     try {
-        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
+        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
         const getUser = await gameContract.getUser(_nft)
         return getUser
     } catch (e) {
@@ -49,7 +49,7 @@ export async function GetUser(_nft, provider) {
 }
 
 export async function GetMingleMetadata(id, provider) {
-    const mingleContract = new ethers.Contract(process.env.NEXT_PUBLIC_MINGLE_CONTRACT, mingleABI, provider)
+    const mingleContract = new ethers.Contract(process.env.NEXT_PUBLIC_MINGLE_CONTRACT_SEPOLIA, mingleABI, provider)
     if (id == null || id == "") return
     try {
         const metadataMingles = await mingleContract.tokenURI(id)
