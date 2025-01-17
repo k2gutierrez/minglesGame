@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { WalletContextProvider } from "./context/wallet";
 
 // NOTE: I like to put font in public/fonts, however technically font files can be colocated inside of `pages`
 const pressura = localFont({ 
@@ -33,11 +34,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${hogfish.variable} ${hogfish.variable} antialiased`}
-      >
-        {children}
-      </body>
+      
+        <body
+          className={`${hogfish.variable} ${hogfish.variable} antialiased`}
+        >
+          <WalletContextProvider>
+            {children}
+          </WalletContextProvider>
+        </body>
     </html>
   );
 }
