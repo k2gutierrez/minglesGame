@@ -45,22 +45,22 @@ export default function Home() {
   //let imageTest = 'https://ipfs.io/ipfs/QmY3DR3EKhLsZx1Dx1vM8HRc2xXvwjCJ6shdHV6pavc7eL/1.png'
 
   const {
-      isConnected,
-      setIsConnected,
-      userAddress,
-      setUserAddress,
-      signer,
-      setSigner,
-      provider,
-      setProvider,
-      location,
-      setLocation,
-      tokenId,
-      setTokenId
-    } = useContext(WalletContext);
+    isConnected,
+    setIsConnected,
+    userAddress,
+    setUserAddress,
+    signer,
+    setSigner,
+    provider,
+    setProvider,
+    location,
+    setLocation,
+    tokenId,
+    setTokenId
+  } = useContext(WalletContext);
 
-    let [mingle, setMingle] = useState(null);
-    let [chain, setChain] = useState(0)
+  let [mingle, setMingle] = useState(null);
+  let [chain, setChain] = useState(0)
 
   const connectWallet = async () => {
     if (!window.ethereum) {
@@ -79,7 +79,7 @@ export default function Home() {
       setChain(chainID.toString())
       const sepoliaNetworkId = "11155111"
       const apeChainId = "33139"
-      
+
       setIsConnected(true);
 
       {/*if (chainID.toString() !== apeChainId) {
@@ -87,9 +87,9 @@ export default function Home() {
         return
       }*/}
 
-      if(chainID.toString() !== sepoliaNetworkId){
-          alert("Please switch your wallet to sepolia network")
-          return
+      if (chainID.toString() !== sepoliaNetworkId) {
+        alert("Please switch your wallet to sepolia network")
+        return
       }
 
     } catch (error) {
@@ -98,13 +98,14 @@ export default function Home() {
 
   }
 
-  async function getMingles () {
+  async function getMingles() {
+    //api-apechain
     const options = {
       method: 'GET',
-      url: `https://${chain == "11155111" ? "api-sepolia" : "api-apechain"}.reservoir.tools/users/${userAddress}/tokens/v10?contract=${ chain == "11155111" ? process.env.NEXT_PUBLIC_MINGLE_CONTRACT_SEPOLIA : process.env.NEXT_PUBLIC_MINGLE_CONTRACT_APECHAIN}}`,                
-      headers: {accept: '*/*', 'x-api-key': process.env.NEXT_PUBLIC_RESERVOIR}
+      url: `https://api-sepolia.reservoir.tools/users/${userAddress}/tokens/v10?contract=0xD11a3C3f781aFf4665381Deb70be76b55862D794`,
+      headers: { accept: '*/*', 'x-api-key': process.env.NEXT_PUBLIC_RESERVOIR }
     };
-    
+
     axios
       .request(options)
       .then(res => {
@@ -113,7 +114,6 @@ export default function Home() {
         setLocation("mingles")
       })
       .catch(err => console.error(err));
-      
   }
 
   return (
@@ -126,67 +126,67 @@ export default function Home() {
         <Login connect={connectWallet} getMingles={getMingles} />
       )
       }
-      { location == "mingles" && (
+      {location == "mingles" && (
         <SelectMingle mingle={mingle} />
       )
       }
-      { location == "no" && (
+      {location == "no" && (
         <No />
       )
       }
-      { location == "patio" && (
-        <Patio/>
+      {location == "patio" && (
+        <Patio />
       )
       }
-      { location == "main hall" && (
+      {location == "main hall" && (
         <MainHall />
       )
       }
-      { location == "back door tunnels" && (
+      {location == "back door tunnels" && (
         <BackDoorTunnels />
       )
       }
-      { location == "oven room" && (
+      {location == "oven room" && (
         <OvenRoom />
       )
       }
-      { location == "distillery room" && (
+      {location == "distillery room" && (
         <DistilleryRoom />
       )
       }
-      { location == "barrel room" && (
+      {location == "barrel room" && (
         <BarrelRoom />
       )
       }
-      { location == "hall1" && (
+      {location == "hall1" && (
         <Hall1 />
       )
       }
-      { location == "hall2" && (
+      {location == "hall2" && (
         <Hall2 />
       )
       }
-      { location == "hall3" && (
+      {location == "hall3" && (
         <Hall3 />
       )
       }
-      { location == "fermentation room" && (
+      {location == "fermentation room" && (
         <FermentationRoom />
       )
       }
-      { location == "private cava" && (
+      {location == "private cava" && (
         <PrivateCava />
       )
       }
-      { location == "raven nest" && (
+      {location == "raven nest" && (
         <RavenNest />
       )
       }
-      { location == "basement prison" && (
+      {location == "basement prison" && (
         <BasementPrison />
       )
       }
-      { location == "survivors" && (
+      {location == "survivors" && (
         <Survivor />
       )
       }
