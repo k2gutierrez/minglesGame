@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import { mingleABI } from "../abis/mingleABI";
 import { gameABI } from "../abis/gameABI";
+import { toBytes } from "viem";
 
 const externalProvider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_NODE)
 
@@ -8,7 +9,11 @@ export async function Sign(_nft, _wormLvl, signer) {
     if (_nft == null) return
     try {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-        const signIn = await gameContract.register(_nft, _wormLvl, 0, "patio")
+        const signIn = await gameContract.register(_nft, _wormLvl, 0, toBytes("patio", {size:32}), {
+            value: ethers.parseEther("0"),
+            gasLimit: 3000000, // or a dynamic estimate
+            gasPrice: ethers.parseUnits("10", "gwei")
+        })
         return signIn
     } catch (e) {
         console.error(e)
@@ -19,7 +24,7 @@ export async function Choice(_nft, _location, signer) {
     if (_nft == null) return
     try {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-        const choiceToSurvive = await gameContract.choice(_nft, _location)
+        const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, {size:32}))
         return choiceToSurvive
     } catch (e) {
         console.error(e)
@@ -30,7 +35,7 @@ export async function EscapeChoice(_nft, _location, signer) {
     if (_nft == null) return
     try {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-        const choiceToEscape = await gameContract.escapeChoice(_nft, _location)
+        const choiceToEscape = await gameContract.escapeChoice(_nft, toBytes(_location, {size:32}))
         return choiceToEscape
     } catch (e) {
         console.error(e)
@@ -42,7 +47,21 @@ export async function GetUser(_nft, provider) {
     try {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
         const getUser = await gameContract.getUser(_nft)
-        return getUser
+        let loc = ethers.decodeBytes32String(getUser[2])
+        let id = ethers.toNumber(getUser[0]).toString()
+        let mStatus = getUser[1]
+        let lvl = ethers.toNumber(getUser[3]).toString()
+        let Cstage = ethers.toNumber(getUser[4]).toString()
+        let Crevive = getUser[5]
+        let info = {
+            nftId: id,
+            status: mStatus,
+            location: loc,
+            wormLvl: lvl,
+            stage: Cstage,
+            revive: Crevive
+        }
+        return info
     } catch (e) {
         console.error(e)
     }

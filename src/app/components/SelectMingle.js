@@ -7,6 +7,9 @@ import { WalletContext } from "../context/wallet";
 import { GetMingleMetadata } from "../engine/engine";
 import { mingleType } from "../engine/engine";
 import { Sign } from "../engine/engine";
+import { GetUser } from "../engine/engine";
+import { hexToString } from "viem";
+import Card from "./Card";
 
 export default function SelectMingle({ mingle }) {
 
@@ -25,14 +28,28 @@ export default function SelectMingle({ mingle }) {
         setTokenId
     } = useContext(WalletContext);
 
-    const [token, setToken] = useState(null)
+    let [token, setToken] = useState(false)
 
     useEffect(() => {
-        if (token != null){
-            setLocation("patio")
+        if (mingle) {
+            setToken(true)
         }
 
     }, [token])
+
+    const getMingleData = async (id) => {
+
+        let type = await GetMingleMetadata(id, provider)
+        let surviveChance = await mingleType(type)
+        try {
+            let sign = await Sign(id, surviveChance, signer)
+            //setToken(id)
+            //setTokenId(id)
+        } catch (e) {
+            console.error(e)
+            window.alert(e)
+        }
+    }
 
     return (
         <>
@@ -40,30 +57,17 @@ export default function SelectMingle({ mingle }) {
                 <p className="text-white font-[family-name:var(--font-pressura)]">Pick your Mingle</p>
             </div>
             <div className="text-center grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 mt-5">
-                {
-                    mingle != null && (
-                        mingle.tokens.map((v, k) => {
-                            const getMingleData = async () => {
-                                let type = await GetMingleMetadata(v.token.tokenId, provider)
-                                let surviveChance = await mingleType(type)
-                                let sign = await Sign(v.token.tokenId, surviveChance, signer)
-                                if (sign == true){
-                                    setToken(v.token.tokenId)
-                                    setTokenId(v.token.tokenId)
-                                } else {
-                                    window.alert("Something went wrong")
-                                }
-                                
-                            }
-                            return (
-                                <div key={k} className="rounded-lg border border-gray-400 font-[family-name:var(--font-hogfish)]">
-                                    <Image src={"https://d9emswcmuvawb.cloudfront.net/PFP" + v.token.tokenId + ".png"} alt={v.token.tokenId} width={200} height={200} />
-                                    <p className="pt-1"># {v.token.tokenId} <span className="text-green-500">Alive {""}</span></p>
-                                    <button type="button" onClick={getMingleData} className="border border-1 border-black px-1 pt-2 rounded-xl mb-1 bg-slate-300">Register</button>
-                                </div>
-                            )
-                        })
-                    )
+                { mingle && (
+                    mingle.tokens.map((v, k) => {
+
+                        const mingleInfo = v.token.tokenId
+                        
+                        return(
+                            <Card key={k} nft={mingleInfo} />
+                        )
+                    }
+                )
+                )
                 }
             </div>
         </>

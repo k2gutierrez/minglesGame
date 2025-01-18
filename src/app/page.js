@@ -70,10 +70,10 @@ export default function Home() {
     try {
       const provider = new BrowserProvider(window.ethereum);
       setProvider(provider)
-      const signer = await provider.getSigner();
-      setSigner(signer);
       const accounts = await provider.send("eth_requestAccounts", []);
       setUserAddress(accounts[0]);
+      const signer = await provider.getSigner();
+      setSigner(signer);
       const network = await provider.getNetwork();
       const chainID = network.chainId;
       setChain(chainID.toString())
