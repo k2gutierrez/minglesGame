@@ -2,11 +2,11 @@
 import Image from "next/image";
 import styles from "./profile.module.css";
 import cls from "classnames";
-import { React, useContext } from 'react';
-import mingle from "../../../../public/assets/1of1s.png";
-import { GetUser } from "@/app/engine/engine";
-import { Choice } from "@/app/engine/engine";
+import { React, useContext, useState, useEffect } from 'react';
 import { WalletContext } from "@/app/context/wallet";
+import { ethers } from "ethers";
+import { gameABI } from "@/app/abis/gameABI";
+import { toBytes } from "viem";
 
 export default function BarrelRoom() {
 
@@ -22,40 +22,91 @@ export default function BarrelRoom() {
     location,
     setLocation,
     tokenId,
-    setTokenId
+    setTokenId,
+    isAlive,
+    setIsAlive
   } = useContext(WalletContext);
 
-  const [user, setUser] = useState(GetUser(tokenId, provider))
+  const [loc, setLoc] = useState("")
+    const [id, setId] = useState(0)
+    const [mstatus, setMstatus] = useState()
+    const [lvl, setLvl] = useState(0)
+    const [cstage, setCstage] = useState(0)
+    const [crevive, setCrevive] = useState()
+    const [trigger, setTrigger] = useState(false)
 
   const choice1 = "hall2"
   const choice2 = "hall3"
 
   useEffect(() => {
-    if (user.location == choice1) {
-      setLocation(user.location)
+      GetUser(tokenId)
+      if (trigger == true) {
+        check()
+      }
+  
+    }, [trigger])
+  
+    async function check () {
+      let res = await GetUser(tokenId)
+      console.log(res)
+      setTimeout(() => {
+        setIsAlive(mstatus)
+        setLocation(loc)
+      }, 2000);
     }
-
-    if (user.location == choice2) {
-      setLocation(user.location)
+  
+    async function Choice(_nft, _location) {
+      if (tokenId == null) return
+      try {
+        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
+        const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), {
+                gasLimit: 3000000, // or a dynamic estimate
+                gasPrice: ethers.parseUnits("10", "gwei")
+            })
+        const res = await choiceToSurvive.wait()
+        console.log("choiceToSurvive", choiceToSurvive)
+        console.log("res: ", res)
+        await GetUser(tokenId)
+        console.log(mstatus)
+        console.log(loc)
+        setTrigger(true)
+        setIsAlive(mstatus)
+        setLocation(loc)
+      } catch (e) {
+        console.error(e)
+      }
     }
-
-  }, [user])
-
-  const firstChoice = async () => {
-    let getChoice = await Choice(tokenId, choice1, signer)
-    if (getChoice == true) {
-      const user = await GetUser(tokenId, provider)
-      setUser(user)
+  
+    const c1 = async () => {
+      Choice(tokenId, choice1)
     }
-  }
-
-  const secondChoice = async () => {
-    let getChoice = await Choice(tokenId, choice2, signer)
-    if (getChoice == true) {
-      const user = await GetUser(tokenId, provider)
-      setUser(user)
+  
+    const c2 = async () => {
+      Choice(tokenId, choice2)
     }
-  }
+  
+    async function GetUser(nft) {
+          if (nft == null) return
+          try {
+            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+            const getUser = await gameContract.getUser(nft)
+            let loc = ethers.decodeBytes32String(getUser[2])
+            setLoc(loc)
+            let id = ethers.toNumber(getUser[0])
+            setId(id)
+            let mStatus = getUser[1]
+            setMstatus(mStatus)
+            let lvl = ethers.toNumber(getUser[3])
+            setLvl(lvl)
+            let Cstage = ethers.toNumber(getUser[4])
+            setCstage(Cstage)
+            let Crevive = getUser[5]
+            setCrevive(Crevive)
+      
+          } catch (e) {
+            console.error(e)
+          }
+        }
 
   return (
     <>

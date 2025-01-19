@@ -2,11 +2,11 @@
 import Image from "next/image";
 import styles from "./profile.module.css";
 import cls from "classnames";
-import { React, useContext } from 'react';
-import mingle from "../../../../public/assets/1of1s.png";
-import { GetUser } from "@/app/engine/engine";
-import { Choice } from "@/app/engine/engine";
+import { React, useContext, useState, useEffect } from 'react';
 import { WalletContext } from "@/app/context/wallet";
+import { ethers } from "ethers";
+import { gameABI } from "@/app/abis/gameABI";
+import { toBytes } from "viem";
 
 export default function RavenNest() {
 
@@ -22,25 +22,84 @@ export default function RavenNest() {
     location,
     setLocation,
     tokenId,
-    setTokenId
+    setTokenId,
+    isAlive,
+    setIsAlive
   } = useContext(WalletContext);
 
-  const [user, setUser] = useState(GetUser(tokenId, provider))
+  const [loc, setLoc] = useState("")
+  const [id, setId] = useState(0)
+  const [mstatus, setMstatus] = useState()
+  const [lvl, setLvl] = useState(0)
+  const [cstage, setCstage] = useState(0)
+  const [crevive, setCrevive] = useState()
+  const [trigger, setTrigger] = useState(false)
 
   const onlyChoice = "basement prison"
 
   useEffect(() => {
-    if (user.location == onlyChoice) {
-      setLocation(user.location)
+    GetUser(tokenId)
+    if (trigger == true) {
+      check()
     }
 
-  }, [user])
+  }, [trigger])
 
-  const theChoice = async () => {
-    let getChoice = await Choice(tokenId, onlyChoice, signer)
-    if (getChoice == true) {
-      const user = await GetUser(tokenId, provider)
-      setUser(user)
+  async function check() {
+    let res = await GetUser(tokenId)
+    console.log(res)
+    setTimeout(() => {
+      setIsAlive(mstatus)
+      setLocation(loc)
+    }, 2000);
+  }
+
+  async function Choice(_nft, _location) {
+    if (tokenId == null) return
+    try {
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
+      const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), {
+              gasLimit: 3000000, // or a dynamic estimate
+              gasPrice: ethers.parseUnits("10", "gwei")
+          })
+      const res = await choiceToSurvive.wait()
+      console.log("choiceToSurvive", choiceToSurvive)
+      console.log("res: ", res)
+      await GetUser(tokenId)
+      console.log(mstatus)
+      console.log(loc)
+      setTrigger(true)
+      setIsAlive(mstatus)
+      setLocation(loc)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const c1 = async () => {
+    Choice(tokenId, onlyChoice)
+  }
+
+  async function GetUser(nft) {
+    if (nft == null) return
+    try {
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+      const getUser = await gameContract.getUser(nft)
+      let loc = ethers.decodeBytes32String(getUser[2])
+      setLoc(loc)
+      let id = ethers.toNumber(getUser[0])
+      setId(id)
+      let mStatus = getUser[1]
+      setMstatus(mStatus)
+      let lvl = ethers.toNumber(getUser[3])
+      setLvl(lvl)
+      let Cstage = ethers.toNumber(getUser[4])
+      setCstage(Cstage)
+      let Crevive = getUser[5]
+      setCrevive(Crevive)
+
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -56,23 +115,23 @@ export default function RavenNest() {
         You’re in the Giant Raven’s lair—talons scrape, shadows move.
       </p>
       <div className="mt-5 mb-5 flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={theChoice} >
+        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
           A. Sharp talons glint from the shadows above.
         </button>
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={theChoice} >
+        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
           B. Wingbeats echo faintly around you.
         </button>
       </div>
       <div className="mt-5 mb-5 flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={theChoice} >
+        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
           C. Glowing eyes track your every step.
         </button>
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={theChoice} >
+        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
           D. Feathers and decay fill the air ominously.
         </button>
       </div>
       <div className="mt-5 mb-10 flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={theChoice} >
+        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
           E. The room vibrates slightly, as whispers surround you.
         </button>
       </div>

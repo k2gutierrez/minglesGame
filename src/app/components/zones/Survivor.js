@@ -2,11 +2,11 @@
 import Image from "next/image";
 import styles from "./profile.module.css";
 import cls from "classnames";
-import { React, useContext } from 'react';
-import mingle from "../../../../public/assets/1of1s.png";
-import { GetUser } from "@/app/engine/engine";
-import { EscapeChoice } from "@/app/engine/engine";
+import { React, useContext, useState, useEffect } from 'react';
 import { WalletContext } from "@/app/context/wallet";
+import { ethers } from "ethers";
+import { gameABI } from "@/app/abis/gameABI";
+import { toBytes } from "viem";
 
 export default function Survivor() {
 
@@ -25,7 +25,21 @@ export default function Survivor() {
     setTokenId
   } = useContext(WalletContext);
 
-  const [user, setUser] = useState(GetUser(tokenId, provider))
+  const [loc, setLoc] = useState("")
+  const [id, setId] = useState(0)
+  const [mstatus, setMstatus] = useState()
+  const [lvl, setLvl] = useState(0)
+  const [cstage, setCstage] = useState(0)
+  const [crevive, setCrevive] = useState()
+  const [trigger, setTrigger] = useState(false)
+
+  useEffect(() => {
+    GetUser(tokenId)
+    if (trigger == true) {
+      check()
+    }
+
+  }, [trigger])
 
   return (
     <>

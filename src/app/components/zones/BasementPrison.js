@@ -2,11 +2,11 @@
 import Image from "next/image";
 import styles from "./profile.module.css";
 import cls from "classnames";
-import { React, useContext } from 'react';
-import mingle from "../../../../public/assets/1of1s.png";
-import { GetUser } from "@/app/engine/engine";
-import { EscapeChoice } from "@/app/engine/engine";
+import { React, useContext, useState, useEffect } from 'react';
 import { WalletContext } from "@/app/context/wallet";
+import { ethers } from "ethers";
+import { gameABI } from "@/app/abis/gameABI";
+import { toBytes } from "viem";
 
 export default function BasementPrison() {
 
@@ -22,25 +22,84 @@ export default function BasementPrison() {
     location,
     setLocation,
     tokenId,
-    setTokenId
+    setTokenId,
+    isAlive,
+    setIsAlive
   } = useContext(WalletContext);
 
-  const [user, setUser] = useState(GetUser(tokenId, provider))
+  const [loc, setLoc] = useState("")
+  const [id, setId] = useState(0)
+  const [mstatus, setMstatus] = useState()
+  const [lvl, setLvl] = useState(0)
+  const [cstage, setCstage] = useState(0)
+  const [crevive, setCrevive] = useState()
+  const [trigger, setTrigger] = useState(false)
 
   const escape = "survivors"
 
   useEffect(() => {
-    if (user.location == escape) {
-      setLocation(user.location)
+    GetUser(tokenId)
+    if (trigger == true) {
+      check()
     }
 
-  }, [user])
+  }, [trigger])
 
-  const escapeChance = async () => {
-    let getChoice = await EscapeChoice(tokenId, escape, signer)
-    if (getChoice == true) {
-      const user = await GetUser(tokenId, provider)
-      setUser(user)
+  async function check() {
+    let res = await GetUser(tokenId)
+    console.log(res)
+    setTimeout(() => {
+      setIsAlive(mstatus)
+      setLocation(loc)
+    }, 2000);
+  }
+
+  async function EscapeChoice(_nft, _location, signer) {
+    if (_nft == null) return
+    try {
+        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
+        const choiceToEscape = await gameContract.escapeChoice(_nft, toBytes(_location, {size:32}), {
+                gasLimit: 3000000, // or a dynamic estimate
+                gasPrice: ethers.parseUnits("10", "gwei")
+            })
+        const res = await choiceToEscape.wait()
+        console.log("choiceToSurvive", choiceToSurvive)
+        console.log("res: ", res)
+        await GetUser(tokenId)
+        console.log(mstatus)
+        console.log(loc)
+        setTrigger(true)
+        setIsAlive(mstatus)
+        setLocation(loc)
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+  const c1 = async () => {
+    EscapeChoice(tokenId, escape)
+  }
+
+  async function GetUser(nft) {
+    if (nft == null) return
+    try {
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+      const getUser = await gameContract.getUser(nft)
+      let loc = ethers.decodeBytes32String(getUser[2])
+      setLoc(loc)
+      let id = ethers.toNumber(getUser[0])
+      setId(id)
+      let mStatus = getUser[1]
+      setMstatus(mStatus)
+      let lvl = ethers.toNumber(getUser[3])
+      setLvl(lvl)
+      let Cstage = ethers.toNumber(getUser[4])
+      setCstage(Cstage)
+      let Crevive = getUser[5]
+      setCrevive(Crevive)
+
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -52,9 +111,9 @@ export default function BasementPrison() {
       </div>
       <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ENTERED THE BASEMENT PRISON</p>
       <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
-      <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">A maze of barrels—rich tequila scents and lurking threats.</p>
+      <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">You have found all the mingles, free them and scape.</p>
       <div className="mt-5 mb-10 flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={escapeChance} >A. The scent of oak leads you toward a shadowy passage.</button>
+        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >Escape</button>
       </div>
     </>
   )

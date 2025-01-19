@@ -2,11 +2,11 @@
 import Image from "next/image";
 import styles from "./profile.module.css";
 import cls from "classnames";
-import { React, useContext } from 'react';
-import mingle from "../../../../public/assets/1of1s.png";
-import { GetUser } from "@/app/engine/engine";
-import { Choice } from "@/app/engine/engine";
+import { React, useContext, useState, useEffect } from 'react';
 import { WalletContext } from "@/app/context/wallet";
+import { ethers } from "ethers";
+import { gameABI } from "@/app/abis/gameABI";
+import { toBytes } from "viem";
 
 export default function Hall3() {
 
@@ -22,38 +22,89 @@ export default function Hall3() {
     location,
     setLocation,
     tokenId,
-    setTokenId
+    setTokenId,
+    isAlive,
+    setIsAlive
   } = useContext(WalletContext);
 
-  const [user, setUser] = useState(GetUser(tokenId, provider))
+  const [loc, setLoc] = useState("")
+  const [id, setId] = useState(0)
+  const [mstatus, setMstatus] = useState()
+  const [lvl, setLvl] = useState(0)
+  const [cstage, setCstage] = useState(0)
+  const [crevive, setCrevive] = useState()
+  const [trigger, setTrigger] = useState(false)
 
   const choice1 = "private cava"
   const choice2 = "private cava"
 
   useEffect(() => {
-    if (user.location == choice1) {
-      setLocation(user.location)
+    GetUser(tokenId)
+    if (trigger == true) {
+      check()
     }
 
-    if (user.location == choice2) {
-      setLocation(user.location)
-    }
+  }, [trigger])
 
-  }, [user])
+  async function check() {
+    let res = await GetUser(tokenId)
+    console.log(res)
+    setTimeout(() => {
+      setIsAlive(mstatus)
+      setLocation(loc)
+    }, 2000);
+  }
 
-  const firstChoice = async () => {
-    let getChoice = await Choice(tokenId, choice1, signer)
-    if (getChoice == true) {
-      const user = await GetUser(tokenId, provider)
-      setUser(user)
+  async function Choice(_nft, _location) {
+    if (tokenId == null) return
+    try {
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
+      const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), {
+              gasLimit: 3000000, // or a dynamic estimate
+              gasPrice: ethers.parseUnits("10", "gwei")
+          })
+      const res = await choiceToSurvive.wait()
+      console.log("choiceToSurvive", choiceToSurvive)
+      console.log("res: ", res)
+      await GetUser(tokenId)
+      console.log(mstatus)
+      console.log(loc)
+      setTrigger(true)
+      setIsAlive(mstatus)
+      setLocation(loc)
+    } catch (e) {
+      console.error(e)
     }
   }
 
-  const secondChoice = async () => {
-    let getChoice = await Choice(tokenId, choice2, signer)
-    if (getChoice == true) {
-      const user = await GetUser(tokenId, provider)
-      setUser(user)
+  const c1 = async () => {
+    Choice(tokenId, choice1)
+  }
+
+  const c2 = async () => {
+    Choice(tokenId, choice2)
+  }
+
+  async function GetUser(nft) {
+    if (nft == null) return
+    try {
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+      const getUser = await gameContract.getUser(nft)
+      let loc = ethers.decodeBytes32String(getUser[2])
+      setLoc(loc)
+      let id = ethers.toNumber(getUser[0])
+      setId(id)
+      let mStatus = getUser[1]
+      setMstatus(mStatus)
+      let lvl = ethers.toNumber(getUser[3])
+      setLvl(lvl)
+      let Cstage = ethers.toNumber(getUser[4])
+      setCstage(Cstage)
+      let Crevive = getUser[5]
+      setCrevive(Crevive)
+
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -69,10 +120,10 @@ export default function Hall3() {
         Dark and tight, with faint noises ahead that scream trouble.
       </p>
       <div className="mt-5 mb-10 flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={firstChoice} >
+        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
           A. A hidden path leads to a heavy, vault-like door.
         </button>
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={secondChoice} >
+        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c2} >
           B. A faint light flickers at the end of the hall.
         </button>
       </div>

@@ -11,6 +11,7 @@ export const WalletContextProvider = ({children}) => {
     let [provider, setProvider] = useState();
     let [location, setLocation] = useState("");
     let [tokenId, setTokenId] = useState(null);
+    let [isAlive, setIsAlive] = useState(true);
 
     return (
         <WalletContext.Provider 
@@ -26,7 +27,9 @@ export const WalletContextProvider = ({children}) => {
                 location,
                 setLocation,
                 tokenId,
-                setTokenId
+                setTokenId,
+                isAlive,
+                setIsAlive
             }}
         >
             {children}

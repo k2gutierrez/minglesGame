@@ -3,8 +3,6 @@ import Image from "next/image";
 import styles from "./profile.module.css";
 import cls from "classnames";
 import { React, useContext, useEffect, useState } from 'react';
-import { GetUser } from "@/app/engine/engine";
-import { Choice } from "@/app/engine/engine";
 import { WalletContext } from "@/app/context/wallet";
 import { ethers } from "ethers";
 import { gameABI } from "@/app/abis/gameABI";
@@ -24,20 +22,54 @@ export default function Patio() {
     location,
     setLocation,
     tokenId,
-    setTokenId
+    setTokenId,
+    isAlive,
+    setIsAlive
   } = useContext(WalletContext);
+
+  const [loc, setLoc] = useState("")
+  const [id, setId] = useState(0)
+  const [mstatus, setMstatus] = useState()
+  const [lvl, setLvl] = useState(0)
+  const [cstage, setCstage] = useState(0)
+  const [crevive, setCrevive] = useState()
+  const [trigger, setTrigger] = useState(false)
 
   const choice1 = "main hall"
   const choice2 = "back door tunnels"
+
+  useEffect(() => {
+    GetUser(tokenId)
+    if (trigger == true) {
+      check()
+    }
+
+  }, [trigger])
+
+  async function check() {
+    let res = await GetUser(tokenId)
+    console.log(res)
+    setTimeout(() => {
+      setIsAlive(mstatus)
+      setLocation(loc)
+    }, 2000);
+  }
 
   async function Choice(_nft, _location) {
     if (tokenId == null) return
     try {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-      const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }))
+      const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), {
+        gasLimit: 3000000, // or a dynamic estimate
+        gasPrice: ethers.parseUnits("10", "gwei")
+    })
       const res = await choiceToSurvive.wait()
-      console.log(choiceToSurvive)
-      console.log(res)
+      console.log("choiceToSurvive", choiceToSurvive)
+      console.log("res: ", res)
+      await GetUser(tokenId)
+      setTrigger(true)
+      setIsAlive(mstatus)
+      setLocation(loc)
     } catch (e) {
       console.error(e)
     }
@@ -49,6 +81,29 @@ export default function Patio() {
 
   const c2 = async () => {
     Choice(tokenId, choice2)
+  }
+
+  async function GetUser(nft) {
+    if (nft == null) return
+    try {
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+      const getUser = await gameContract.getUser(nft)
+      let loc = ethers.decodeBytes32String(getUser[2])
+      setLoc(loc)
+      let id = ethers.toNumber(getUser[0])
+      setId(id)
+      let mStatus = getUser[1]
+      setMstatus(mStatus)
+      let lvl = ethers.toNumber(getUser[3])
+      setLvl(lvl)
+      let Cstage = ethers.toNumber(getUser[4])
+      setCstage(Cstage)
+      let Crevive = getUser[5]
+      setCrevive(Crevive)
+
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (

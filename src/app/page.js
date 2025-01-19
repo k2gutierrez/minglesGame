@@ -56,7 +56,9 @@ export default function Home() {
     location,
     setLocation,
     tokenId,
-    setTokenId
+    setTokenId,
+    isAlive,
+    setIsAlive
   } = useContext(WalletContext);
 
   let [mingle, setMingle] = useState(null);
@@ -188,6 +190,10 @@ export default function Home() {
       }
       {location == "survivors" && (
         <Survivor />
+      )
+      }
+      {location == "dead" && (
+        <Die />
       )
       }
     </div>
