@@ -54,11 +54,11 @@ export default function RavenNest() {
     }, 2000);
   }
 
-  async function Choice(_nft, _location) {
+  async function Choice(_nft, _location, _num) {
     if (tokenId == null) return
     try {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-      const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), {
+      const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), _num, {
               gasLimit: 3000000, // or a dynamic estimate
               gasPrice: ethers.parseUnits("10", "gwei")
           })
@@ -77,7 +77,7 @@ export default function RavenNest() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, onlyChoice)
+    Choice(tokenId, onlyChoice, 20)
   }
 
   async function GetUser(nft) {
