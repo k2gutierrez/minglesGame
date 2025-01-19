@@ -220,6 +220,11 @@ export const gameABI = [
 				"internalType": "bytes32",
 				"name": "_location",
 				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "num",
+				"type": "uint256"
 			}
 		],
 		"name": "choice",
@@ -549,11 +554,6 @@ export const gameABI = [
 				"type": "uint256"
 			},
 			{
-				"internalType": "uint256",
-				"name": "_gameCost",
-				"type": "uint256"
-			},
-			{
 				"internalType": "bytes32",
 				"name": "_location",
 				"type": "bytes32"
@@ -587,11 +587,6 @@ export const gameABI = [
 			{
 				"internalType": "uint256",
 				"name": "_wormLvl",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_gameCost",
 				"type": "uint256"
 			},
 			{
