@@ -82,7 +82,7 @@ export default function MainHall() {
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 20)
+    Choice(tokenId, choice2, 1)
   }
 
   async function GetUser(nft) {

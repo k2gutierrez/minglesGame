@@ -78,11 +78,11 @@ export default function BarrelRoom() {
     }
   
     const c1 = async () => {
-      Choice(tokenId, choice1, 20)
+      Choice(tokenId, choice1, 1)
     }
   
     const c2 = async () => {
-      Choice(tokenId, choice2, 20)
+      Choice(tokenId, choice2, 1)
     }
   
     async function GetUser(nft) {
