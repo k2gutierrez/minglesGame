@@ -63,7 +63,7 @@ export default function BasementPrison() {
                 gasPrice: ethers.parseUnits("10", "gwei")
             })
         const res = await choiceToEscape.wait()
-        console.log("choiceToSurvive", choiceToSurvive)
+        console.log("choiceToSurvive", choiceToEscape)
         console.log("res: ", res)
         await GetUser(tokenId)
         console.log(mstatus)
