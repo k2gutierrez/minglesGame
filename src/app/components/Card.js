@@ -35,7 +35,7 @@ export default function Card({ nft }) {
 
     useEffect(() => {
         GetUser(nft)
-        setTokenId(nft)
+        
         if (trigger == true){
             triggerRegister
         }
@@ -83,6 +83,7 @@ export default function Card({ nft }) {
         let surviveChance = await mingleType(type)
         try {
             let sign = await Sign(nft, surviveChance, signer)
+            setTokenId(nft)
             let w = await sign.wait()
             setLocation("patio")
             
