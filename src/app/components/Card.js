@@ -43,7 +43,9 @@ export default function Card({ nft }) {
 
     const registerInContext = async () => {
         setTokenId(nft)
-        setLocation(loc)
+        setTimeout(() => {
+            setLocation(loc)
+        }, 1000);
     }
 
     const triggerRegister = async () => {
