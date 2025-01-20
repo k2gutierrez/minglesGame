@@ -3,6 +3,9 @@ import Image from "next/image";
 import styles from "./profile.module.css";
 import cls from "classnames";
 import { React, useContext, useState, useEffect } from 'react';
+import { ethers } from "ethers";
+import { gameABI } from "@/app/abis/gameABI";
+import { toBytes } from "viem";
 import { WalletContext } from "@/app/context/wallet";
 
 export default function PrivateCava() {
