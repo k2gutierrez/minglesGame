@@ -35,6 +35,7 @@ export default function Card({ nft }) {
 
     useEffect(() => {
         GetUser(nft)
+        setTokenId(nft)
         if (trigger == true){
             triggerRegister
         }
