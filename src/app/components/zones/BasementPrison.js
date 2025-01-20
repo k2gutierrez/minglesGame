@@ -54,7 +54,7 @@ export default function BasementPrison() {
     }, 2000);
   }
 
-  async function EscapeChoice(_nft, _location, signer) {
+  async function EscapeChoice(_nft, _location) {
     if (_nft == null) return
     try {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
@@ -113,7 +113,7 @@ export default function BasementPrison() {
       <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
       <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">You have found all the mingles, free them and escape.</p>
       <div className="mt-5 mb-10 flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
+        <button type="button" className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
           Escape
         </button>
       </div>

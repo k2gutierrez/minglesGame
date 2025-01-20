@@ -76,7 +76,7 @@ export default function Patio() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 20)
+    Choice(tokenId, choice1, 1)
   }
 
   const c2 = async () => {

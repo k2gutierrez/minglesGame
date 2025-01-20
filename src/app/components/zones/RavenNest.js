@@ -77,7 +77,7 @@ export default function RavenNest() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, onlyChoice, 20)
+    Choice(tokenId, onlyChoice, 1)
   }
 
   async function GetUser(nft) {
