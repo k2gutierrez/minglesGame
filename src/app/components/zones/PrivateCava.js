@@ -7,6 +7,7 @@ import { ethers } from "ethers";
 import { gameABI } from "@/app/abis/gameABI";
 import { toBytes } from "viem";
 import { WalletContext } from "@/app/context/wallet";
+import Loader from "../Loader";
 
 export default function PrivateCava() {
 
@@ -35,6 +36,8 @@ export default function PrivateCava() {
   const [crevive, setCrevive] = useState()
   const [trigger, setTrigger] = useState(false)
 
+  const [loading, setLoading] = useState(false)
+
   const choice1 = "raven nest"
   const choice2 = "raven nest"
 
@@ -57,6 +60,7 @@ export default function PrivateCava() {
 
   async function Choice(_nft, _location, _num) {
     if (tokenId == null) return
+    setLoading(true)
     try {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
       const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), _num, {
@@ -110,23 +114,31 @@ export default function PrivateCava() {
 
   return (
     <>
-      <div className="grid text-center mt-6">
-        <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
-        </div>
-      </div>
-      <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ENTERED THE PRIVATE CAVA</p>
-      <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
-      <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">
-        Glimmering bottles line the walls, but whispers make it eerie.
-      </p>
-      <div className="mt-5 mb-10 flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
-          A. Shelves glimmer, but something moves in the shadows.
-        </button>
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c2} >
-          B. The room is silent, yet faint vibrations linger.
-        </button>
-      </div>
+      {loading == true ? (
+        <Loader />
+      ) : (
+        <>
+          <div className="grid text-center mt-6">
+            <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
+            </div>
+          </div>
+          <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ENTERED THE PRIVATE CAVA</p>
+          <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+          <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">
+            Glimmering bottles line the walls, but whispers make it eerie.
+          </p>
+          <div className="mt-5 mb-10 flex items-center justify-center">
+            <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
+              A. Shelves glimmer, but something moves in the shadows.
+            </button>
+            <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c2} >
+              B. The room is silent, yet faint vibrations linger.
+            </button>
+          </div>
+        </>
+      )
+
+      }
     </>
   )
 }

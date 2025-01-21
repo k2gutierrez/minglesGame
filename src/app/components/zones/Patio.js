@@ -7,6 +7,7 @@ import { WalletContext } from "@/app/context/wallet";
 import { ethers } from "ethers";
 import { gameABI } from "@/app/abis/gameABI";
 import { toBytes } from "viem";
+import Loader from "../Loader";
 
 export default function Patio() {
 
@@ -34,6 +35,8 @@ export default function Patio() {
   const [cstage, setCstage] = useState(0)
   const [crevive, setCrevive] = useState()
   const [trigger, setTrigger] = useState(false)
+  
+  const [loading, setLoading] = useState(false)
 
   const choice1 = "main hall"
   const choice2 = "back door tunnels"
@@ -57,12 +60,13 @@ export default function Patio() {
 
   async function Choice(_nft, _location, _num) {
     if (tokenId == null) return
+    setLoading(true)
     try {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
       const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), _num, {
         gasLimit: 3000000, // or a dynamic estimate
         gasPrice: ethers.parseUnits("10", "gwei")
-    })
+      })
       const res = await choiceToSurvive.wait()
       console.log("choiceToSurvive", choiceToSurvive)
       console.log("res: ", res)
@@ -108,17 +112,22 @@ export default function Patio() {
 
   return (
     <>
-      <div className="grid text-center mt-6">
-        <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
-        </div>
-      </div>
-      <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ENTERED THE PATIO</p>
-      <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
-      <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">The raid has started. You entered the agave field. It's scary af.</p>
-      <div className="mt-5 mb-10 flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >A. You spot a grand entrance with its doors slightly ajar.</button>
-        <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c2} >B. Shadows lead to a hidden pathway underground.</button>
-      </div>
+      {loading == true ? (
+        <Loader />
+      )
+        : (<>
+          <div className="grid text-center mt-6">
+            <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
+            </div>
+          </div>
+          <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ENTERED THE PATIO</p>
+          <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+          <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">The raid has started. You entered the agave field. It's scary af.</p>
+          <div className="mt-5 mb-10 flex items-center justify-center">
+            <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >A. You spot a grand entrance with its doors slightly ajar.</button>
+            <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c2} >B. Shadows lead to a hidden pathway underground.</button>
+          </div>
+        </>)}
     </>
   )
 }

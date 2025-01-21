@@ -11,35 +11,71 @@ import { toBytes } from "viem";
 export default function Survivor() {
 
   const {
-    isConnected,
-    setIsConnected,
-    userAddress,
-    setUserAddress,
-    signer,
-    setSigner,
-    provider,
-    setProvider,
-    location,
-    setLocation,
-    tokenId,
-    setTokenId
-  } = useContext(WalletContext);
-
-  const [loc, setLoc] = useState("")
-  const [id, setId] = useState(0)
-  const [mstatus, setMstatus] = useState()
-  const [lvl, setLvl] = useState(0)
-  const [cstage, setCstage] = useState(0)
-  const [crevive, setCrevive] = useState()
-  const [trigger, setTrigger] = useState(false)
-
-  useEffect(() => {
-    GetUser(tokenId)
-    if (trigger == true) {
-      check()
+      isConnected,
+      setIsConnected,
+      userAddress,
+      setUserAddress,
+      signer,
+      setSigner,
+      provider,
+      setProvider,
+      location,
+      setLocation,
+      tokenId,
+      setTokenId,
+      isAlive,
+      setIsAlive
+    } = useContext(WalletContext);
+  
+    const [loc, setLoc] = useState("")
+    const [id, setId] = useState(0)
+    const [mstatus, setMstatus] = useState()
+    const [lvl, setLvl] = useState(0)
+    const [cstage, setCstage] = useState(0)
+    const [crevive, setCrevive] = useState()
+    const [trigger, setTrigger] = useState(false)
+    
+    //const [loading, setLoading] = useState(false)
+  
+    useEffect(() => {
+      GetUser(tokenId)
+      if (trigger == true) {
+        check()
+      }
+  
+    }, [trigger])
+  
+    async function check() {
+      let res = await GetUser(tokenId)
+      console.log(res)
+      setTimeout(() => {
+        setIsAlive(mstatus)
+        setLocation(loc)
+      }, 2000);
     }
-
-  }, [trigger])
+  
+    async function GetUser(nft) {
+      if (nft == null) return
+      try {
+        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+        const getUser = await gameContract.getUser(nft)
+        let loc = ethers.decodeBytes32String(getUser[2])
+        setLoc(loc)
+        let id = ethers.toNumber(getUser[0])
+        setId(id)
+        let mStatus = getUser[1]
+        setMstatus(mStatus)
+        let lvl = ethers.toNumber(getUser[3])
+        setLvl(lvl)
+        let Cstage = ethers.toNumber(getUser[4])
+        setCstage(Cstage)
+        let Crevive = getUser[5]
+        setCrevive(Crevive)
+  
+      } catch (e) {
+        console.error(e)
+      }
+    }
 
   return (
     <>

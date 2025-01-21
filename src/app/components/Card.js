@@ -7,6 +7,7 @@ import { GetMingleMetadata } from '../engine/engine';
 import { mingleType } from '../engine/engine';
 import { Sign } from '../engine/engine';
 import Image from 'next/image';
+import Loader from './Loader';
 
 export default function Card({ nft }) {
 
@@ -32,6 +33,8 @@ export default function Card({ nft }) {
     const [cstage, setCstage] = useState(0)
     const [crevive, setCrevive] = useState()
     const [trigger, setTrigger] = useState(false)
+
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         GetUser(nft)
@@ -78,7 +81,7 @@ export default function Card({ nft }) {
     }
 
     const getMingleData = async () => {
-
+        setLoading(true)
         let type = await GetMingleMetadata(nft, provider)
         let surviveChance = await mingleType(type)
         try {
@@ -95,7 +98,7 @@ export default function Card({ nft }) {
     }
 
     return (
-        <div key={id} className="rounded-lg border border-gray-400 font-[family-name:var(--font-hogfish)]">
+        <div key={id} className="rounded-xl border border-gray-400 font-[family-name:var(--font-hogfish)]">
             <Image src={"https://d9emswcmuvawb.cloudfront.net/PFP" + nft + ".png"} alt={id} width={200} height={200} />
             {id == 0 ?
                 (
@@ -105,9 +108,13 @@ export default function Card({ nft }) {
                                 {"Not registered"}
                             </span>
                         </p>
-                        <button type="button" onClick={getMingleData} className="border border-1 border-black px-1 pt-2 rounded-xl mb-1 bg-slate-300">
+                        {loading == true ?
+                        (
+                            <Loader />
+                        )
+                        : (<button type="button" onClick={getMingleData} className="border border-1 border-black px-1 pt-2 rounded-xl mb-1 bg-slate-300">
                             {"Register"}
-                        </button>
+                        </button>)}
                     </>
                 ) : (
                     <>
