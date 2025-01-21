@@ -56,7 +56,7 @@ export default function SelectMingle({ mingle }) {
             <div className="text-center bg-black rounded-xl p-2 mt-10">
                 <p className="text-white font-[family-name:var(--font-pressura)]">Pick your Mingle</p>
             </div>
-            <div className="text-center grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 mt-5">
+            <div className="text-center grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 mt-5 mb-8">
                 { mingle && (
                     mingle.tokens.map((v, k) => {
 
