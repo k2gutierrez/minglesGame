@@ -28,9 +28,9 @@ export default function SelectMingle({ mingle }) {
         setTokenId
     } = useContext(WalletContext);
 
-    let [token, setToken] = useState(false)
+    //let [token, setToken] = useState(false)
 
-    useEffect(() => {
+    {/*useEffect(() => {
         if (mingle) {
             setToken(true)
         }
@@ -49,7 +49,7 @@ export default function SelectMingle({ mingle }) {
             console.error(e)
             window.alert(e)
         }
-    }
+    }*/}
 
     return (
         <>

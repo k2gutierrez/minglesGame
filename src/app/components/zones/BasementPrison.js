@@ -37,11 +37,13 @@ export default function BasementPrison() {
   const [trigger, setTrigger] = useState(false)
 
   const [loading, setLoading] = useState(false)
+  const [isPaused, setIsPaused] = useState(GetPausedStatus)
 
   const onlyChoice = "survivors"
 
   useEffect(() => {
     GetUser(tokenId)
+    GetPausedStatus()
     if (trigger == true) {
       check()
     }
@@ -107,6 +109,19 @@ export default function BasementPrison() {
     }
   }
 
+  async function GetPausedStatus() {
+    if (nft == null) return
+    try {
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+      const getPausedStatus = await gameContract.getGamePausedStatus()
+      setIsPaused(getPausedStatus)
+      console.log("function: ", getPausedStatus)
+
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
     <>
       {loading == true ? (
@@ -121,9 +136,14 @@ export default function BasementPrison() {
           <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">You have found all the mingles, free them and escape.</p>
           <div className="mt-5 mb-10 flex items-center justify-center">
-            <button type="button" className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
-              Escape
-            </button>
+            {isPaused == true ? (
+              <button type="button" className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
+                Escape
+              </button>
+            ) : (
+              <></>
+            )
+            }
           </div>
         </>)}
     </>

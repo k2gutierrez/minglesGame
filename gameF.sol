@@ -318,23 +318,34 @@ contract NftGame {
             users[_nft].stage ++;
 
             if (users[_nft].stage == 6){
-                survivor(_nft);
+                finalBattle.push(_nft);
+                return true;
             }
-
             return true;
+        } else {
+            if (users[_nft].revive == true){
+                uint256 yourChanceToRevive = users[_nft].wormLvl;
+                uint256 decition = randomchoices() + 1;
+                if (decition <= yourChanceToRevive) {
+                    //users[_nft].status = true;
+                    users[_nft].revive = false;
+                    emit MayahuelRevivedYou(_nft);
+                    return true;
+                } else {
+                    jugadoresPerdidos.push(_nft);
+                    users[_nft].revive = false;
+                    users[_nft].status = false;
+                    users[_nft].location = deadLocation;
+                    return false;
+                }
+            } else {
+                jugadoresPerdidos.push(_nft);
+                users[_nft].status = false;
+                users[_nft].location = deadLocation;
+                return false;
+            }
         }
-
-        if (users[_nft].revive == true){
-            return reviveMingle(_nft);
-        }
-
-        if (users[_nft].revive == false){
-            jugadoresPerdidos.push(_nft);
-        }
-
-        users[_nft].status = false;
-        users[_nft].location = deadLocation;
-        return false;
+        
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -352,20 +363,35 @@ contract NftGame {
             users[_nft].location = _location;
             users[_nft].stage ++;
 
-            return escape(_nft);
+            mingles.push(_nft);
+
+            return true;
+
+        } else {
+            if (users[_nft].revive == false){
+                jugadoresPerdidos.push(_nft);
+                users[_nft].status = false;
+                users[_nft].location = deadLocation;
+            
+                return false;
+            } else {
+                uint256 yourChanceToRevive = users[_nft].wormLvl;
+                uint256 decition = randomchoices() + 1;
+                if (decition <= yourChanceToRevive) {
+                    //users[_nft].status = true;
+                    users[_nft].revive = false;
+                    emit MayahuelRevivedYou(_nft);
+                    return true;
+                } else {
+                    jugadoresPerdidos.push(_nft);
+                    users[_nft].revive = false;
+                    users[_nft].status = false;
+                    users[_nft].location = deadLocation;
+                    return false;
+                }
+            }
         }
 
-        if (users[_nft].revive == true){
-            return reviveMingle(_nft);
-        }
-
-        if (users[_nft].revive == false){
-            jugadoresPerdidos.push(_nft);
-        }
-
-        users[_nft].status = false;
-        users[_nft].location = deadLocation;
-        return false;
     }
 
     ////////////////////// Trigger random choice to compare with "dead" function
@@ -387,7 +413,7 @@ contract NftGame {
     ////////////////////// Final Step game functions //////////////////////
 
     ////////////////////// Mingle defeated the raven, enters to the survivors chamber for raffle, 
-    function survivor(uint256 _nft) private gameHasStarted notPaused returns (bool) {
+    /*function survivor(uint256 _nft) private gameHasStarted notPaused returns (bool) {
         finalBattle.push(_nft);
 
         return true;
@@ -398,12 +424,11 @@ contract NftGame {
         mingles.push(_nft);
 
         return true;
-    }
+    }*/
 
     ////////////////////// Select a winner and send prize (NFT) automatically to winner address
     function selectWinner() external gameHasStarted onlyOwner noContract returns (uint256) { //payable?
         require(gamePaused == true, "Game must be paused");
-        
         if (mingles.length == 0) revert NftGame__NoSurvivors();
 
         ERC721 playerNft = ERC721(nftAddressPlayer);
@@ -415,21 +440,6 @@ contract NftGame {
             uint256 winner1 = mingles[0];
             emit WinnerSelected(winner1);
 
-            users[winner1].status = false;
-
-            for (uint256 i; i < registros.length; i++) {
-                users[registros[i]].stage = 0;
-                users[registros[i]].location = "";
-            }
-
-            delete finalBattle;
-            delete registros;
-            delete mingles;
-            nftAddress = address(0);
-            nftId = 0;
-            gameStatus = false;
-            nftAddressPlayer = address(0);
-
             return winner1;
         }
 
@@ -440,22 +450,6 @@ contract NftGame {
 
         emit WinnerSelected(winner);
 
-        for (uint256 i; i < mingles.length; i++) {
-            users[mingles[i]].status = false;
-        }
-
-        for (uint256 i; i < registros.length; i++) {
-            users[registros[i]].stage = 0;
-            users[registros[i]].location = "";
-        }
-
-        delete finalBattle;
-        delete registros;
-        delete mingles;
-        nftAddress = address(0);
-        nftId = 0;
-        gameStatus = false;
-        nftAddressPlayer = address(0);
         
         return winner;
     }
@@ -474,6 +468,25 @@ contract NftGame {
             );
     }
 
+    ////////////////////// Reset game
+    function resetGame() external gameHasStarted onlyOwner noContract {
+        require(gamePaused == true, "Game must be paused");
+
+        for (uint256 i; i < registros.length; i++) {
+            users[mingles[i]].status = false;
+            users[registros[i]].stage = 0;
+            users[registros[i]].location = "";
+        }
+
+        delete finalBattle;
+        delete registros;
+        delete mingles;
+        nftAddress = address(0);
+        nftId = 0;
+        gameStatus = false;
+        nftAddressPlayer = address(0);
+    }
+    
     ////////////////////// If no survivors left the game end as a failed adventure
     /*
     function AdventureFailed() external gameHasStarted onlyOwner {
