@@ -31,11 +31,6 @@ export const gameABI = [
 	},
 	{
 		"inputs": [],
-		"name": "NftGame__MingleCannotRevive",
-		"type": "error"
-	},
-	{
-		"inputs": [],
 		"name": "NftGame__MingleNotOwned",
 		"type": "error"
 	},
@@ -604,6 +599,13 @@ export const gameABI = [
 			}
 		],
 		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "resetGame",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{

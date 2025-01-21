@@ -325,7 +325,7 @@ contract NftGame {
         }
 
         if (users[_nft].revive == true){
-            reviveMingle(_nft);
+            return reviveMingle(_nft);
         }
 
         if (users[_nft].revive == false){
@@ -356,7 +356,7 @@ contract NftGame {
         }
 
         if (users[_nft].revive == true){
-            reviveMingle(_nft);
+            return reviveMingle(_nft);
         }
 
         if (users[_nft].revive == false){
