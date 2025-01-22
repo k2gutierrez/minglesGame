@@ -35,7 +35,7 @@ export default function Patio() {
   const [cstage, setCstage] = useState(0)
   const [crevive, setCrevive] = useState()
   const [trigger, setTrigger] = useState(false)
-  
+
   const [loading, setLoading] = useState(false)
 
   const choice1 = "main hall"
@@ -80,11 +80,11 @@ export default function Patio() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 1)
+    Choice(tokenId, choice1, 15)
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 1)
+    Choice(tokenId, choice2, 15)
   }
 
   async function GetUser(nft) {

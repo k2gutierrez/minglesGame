@@ -82,11 +82,11 @@ export default function FermentationRoom() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 1)
+    Choice(tokenId, choice1, 40)
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 1)
+    Choice(tokenId, choice2, 30)
   }
 
   async function GetUser(nft) {

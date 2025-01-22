@@ -82,11 +82,11 @@ export default function BackDoorTunnels() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 1)
+    Choice(tokenId, choice1, 10)
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 1)
+    Choice(tokenId, choice2, 25)
   }
 
   async function GetUser(nft) {
