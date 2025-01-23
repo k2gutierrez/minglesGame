@@ -35,6 +35,7 @@ export default function BackDoorTunnels() {
   const [cstage, setCstage] = useState(0)
   const [crevive, setCrevive] = useState()
   const [trigger, setTrigger] = useState(false)
+  const [message, setMessage] = useState("")
 
   const [loading, setLoading] = useState(false)
 
@@ -53,9 +54,13 @@ export default function BackDoorTunnels() {
     let res = await GetUser(tokenId)
     console.log(res)
     setTimeout(() => {
+      if (loc == "back door tunnels"){
+        setMessage("Mayahuel has given you a second chance to pass this stage!")
+      }
+      setLoading(false)
       setIsAlive(mstatus)
       setLocation(loc)
-    }, 2000);
+    }, 1500);
   }
 
   async function Choice(_nft, _location, _num) {
@@ -74,8 +79,8 @@ export default function BackDoorTunnels() {
       console.log(mstatus)
       console.log(loc)
       setTrigger(true)
-      setIsAlive(mstatus)
-      setLocation(loc)
+      //setIsAlive(mstatus)
+      //setLocation(loc)
     } catch (e) {
       console.error(e)
     }
@@ -123,7 +128,8 @@ export default function BackDoorTunnels() {
               <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
               </div>
             </div>
-            <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ENTERED THE BACK DOOR TUNNELS</p>
+            {message != "" && (<p className="mt-2 green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
+            <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE BACK DOOR TUNNELS" : "YOU'RE STILL IN THE BACK DOOR TUNNELS"}</p>
             <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
             <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">Dark, damp, and definitely bad vibes. What’s waiting down here?</p>
             <div className="mt-5 mb-10 flex items-center justify-center">

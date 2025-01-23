@@ -12,6 +12,7 @@ export const WalletContextProvider = ({children}) => {
     let [location, setLocation] = useState("");
     let [tokenId, setTokenId] = useState(null);
     let [isAlive, setIsAlive] = useState(true);
+    const [contract, setContract] = useState(null);
 
     return (
         <WalletContext.Provider 
@@ -29,7 +30,9 @@ export const WalletContextProvider = ({children}) => {
                 tokenId,
                 setTokenId,
                 isAlive,
-                setIsAlive
+                setIsAlive,
+                contract,
+                setContract
             }}
         >
             {children}

@@ -25,7 +25,8 @@ export default function Patio() {
     tokenId,
     setTokenId,
     isAlive,
-    setIsAlive
+    setIsAlive,
+    contract
   } = useContext(WalletContext);
 
   const [loc, setLoc] = useState("")
@@ -35,6 +36,7 @@ export default function Patio() {
   const [cstage, setCstage] = useState(0)
   const [crevive, setCrevive] = useState()
   const [trigger, setTrigger] = useState(false)
+  const [message, setMessage] = useState("")
 
   const [loading, setLoading] = useState(false)
 
@@ -53,9 +55,13 @@ export default function Patio() {
     let res = await GetUser(tokenId)
     console.log(res)
     setTimeout(() => {
+      if (loc == "patio"){
+        setMessage("Mayahuel has given you a second chance to pass this stage!")
+      }
+      setLoading(false)
       setIsAlive(mstatus)
       setLocation(loc)
-    }, 2000);
+    }, 1500);
   }
 
   async function Choice(_nft, _location, _num) {
@@ -72,15 +78,15 @@ export default function Patio() {
       console.log("res: ", res)
       await GetUser(tokenId)
       setTrigger(true)
-      setIsAlive(mstatus)
-      setLocation(loc)
+      //setIsAlive(mstatus)
+      //setLocation(loc)
     } catch (e) {
       console.error(e)
     }
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 15)
+    Choice(tokenId, choice1, 10)
   }
 
   const c2 = async () => {
@@ -120,7 +126,8 @@ export default function Patio() {
             <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
             </div>
           </div>
-          <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ENTERED THE PATIO</p>
+          {message != "" && (<p className="mt-2 green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
+          <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE PATIO" : "YOU'RE STILL IN THE PATIO"}</p>
           <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">The raid has started. You entered the agave field. It's scary af.</p>
           <div className="mt-5 mb-10 flex items-center justify-center">

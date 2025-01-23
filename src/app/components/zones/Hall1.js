@@ -35,6 +35,7 @@ export default function Hall1() {
   const [cstage, setCstage] = useState(0)
   const [crevive, setCrevive] = useState()
   const [trigger, setTrigger] = useState(false)
+  const [message, setMessage] = useState("")
 
   const [loading, setLoading] = useState(false)
 
@@ -53,9 +54,13 @@ export default function Hall1() {
     let res = await GetUser(tokenId)
     console.log(res)
     setTimeout(() => {
+      if (loc == "hall1"){
+        setMessage("Mayahuel has given you a second chance to pass this stage!")
+      }
+      setLoading(false)
       setIsAlive(mstatus)
       setLocation(loc)
-    }, 2000);
+    }, 1500);
   }
 
   async function Choice(_nft, _location, _num) {
@@ -74,8 +79,8 @@ export default function Hall1() {
       console.log(mstatus)
       console.log(loc)
       setTrigger(true)
-      setIsAlive(mstatus)
-      setLocation(loc)
+      //setIsAlive(mstatus)
+      //setLocation(loc)
     } catch (e) {
       console.error(e)
     }
@@ -122,7 +127,8 @@ export default function Hall1() {
             <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
             </div>
           </div>
-          <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ENTERED HALL 1</p>
+          {message != "" && (<p className="mt-2 green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
+          <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED HALL 1" : "YOU'RE STILL IN HALL 1"}</p>
           <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">This hall echoes with bubbling sounds and creeping unease.
           </p>

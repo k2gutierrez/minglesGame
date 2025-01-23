@@ -7,7 +7,7 @@ import styles from "./profile.module.css";
 import { React, useContext, useEffect, useState } from 'react';
 import { WalletContext } from "./context/wallet.js";
 import { ethers } from "ethers";
-import { mingleABI } from "./abis/mingleABI";
+import { gameABI } from "./abis/gameABI";
 //import { TwitterShareButton } from "react-twitter-embed";
 import Link from "next/link";
 import cls from "classnames";
@@ -58,7 +58,9 @@ export default function Home() {
     tokenId,
     setTokenId,
     isAlive,
-    setIsAlive
+    setIsAlive,
+    contract,
+    setContract
   } = useContext(WalletContext);
 
   let [mingle, setMingle] = useState(null);
@@ -81,6 +83,8 @@ export default function Home() {
       setChain(chainID.toString())
       const sepoliaNetworkId = "11155111"
       const apeChainId = "33139"
+      const _contract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+      setContract(_contract)
 
       setIsConnected(true);
 

@@ -70,7 +70,7 @@ const StyledWrapper = styled.div`
 export default function Loader() {
     return (
         <StyledWrapper>
-            <div className="loader mt-20 pt-10">
+            <div className="loader mt-20 ml-10">
                 <div className="quater i" />
                 <div className="quater ii" />
             </div>
