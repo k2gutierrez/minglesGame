@@ -56,10 +56,13 @@ export default function DistilleryRoom() {
     setTimeout(() => {
       if (loc == "distillery room"){
         setMessage("Mayahuel has given you a second chance to pass this stage!")
+        setLoading(false)
+        setIsAlive(mstatus)
+      } else {
+        setIsAlive(mstatus)
+        setLocation(loc)
       }
-      setLoading(false)
-      setIsAlive(mstatus)
-      setLocation(loc)
+      
     }, 1500);
   }
 
@@ -128,7 +131,8 @@ export default function DistilleryRoom() {
               <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
               </div>
             </div>
-            {message != "" && (<p className="mt-2 green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
+            {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
+            {message != "" && (<p className="mt-2 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
             <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE DISTILERY ROOM" : "YOU'RE STILL IN THE DISTILERY ROOM"}</p>
             <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
             <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">The heart of tequila production hums, but something feels off.</p>

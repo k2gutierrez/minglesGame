@@ -59,8 +59,8 @@ export default function Hall1() {
         setLoading(false)
         setIsAlive(mstatus)
       } else {
-      setIsAlive(mstatus)
-      setLocation(loc)
+        setIsAlive(mstatus)
+        setLocation(loc)
       }
     }, 1500);
   }
