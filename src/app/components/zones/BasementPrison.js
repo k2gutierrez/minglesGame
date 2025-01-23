@@ -115,7 +115,6 @@ export default function BasementPrison() {
   }
 
   async function GetPausedStatus() {
-    if (nft == null) return
     try {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
       const getPausedStatus = await gameContract.getGamePausedStatus()
