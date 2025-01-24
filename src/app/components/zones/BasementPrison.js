@@ -52,7 +52,7 @@ export default function BasementPrison() {
     let res = await GetUser(tokenId)
     console.log(res)
     setTimeout(() => {
-      if (loc == "basement prison"){
+      if (loc == "basement prison") {
         setMessage("Mayahuel has given you a second chance to pass this stage!")
         setLoading(false)
         setIsAlive(mstatus)
@@ -132,12 +132,14 @@ export default function BasementPrison() {
       )
         : (<>
           <div className="grid text-center mt-6">
-            <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
-            </div>
+            <video className="px-5" width="600" height="600" autoPlay controls preload="none">
+              <source src="/videos/Escape.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
           {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
           {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
-          <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE BASEMENT PRISON" : "YOU'RE STILL IN THE BASEMENT PRISON"}</p>
+          <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE BASEMENT PRISON" : "YOU'RE STILL IN THE BASEMENT PRISON"}</p>
           <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">You have found all the mingles, free them and escape.</p>
           <div className="mt-5 mb-10 flex items-center justify-center">
