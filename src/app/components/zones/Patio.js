@@ -35,21 +35,19 @@ export default function Patio() {
   const [lvl, setLvl] = useState(0)
   const [cstage, setCstage] = useState(0)
   const [crevive, setCrevive] = useState()
-  const [trigger, setTrigger] = useState(false)
+
   const [message, setMessage] = useState("")
 
   const [loading, setLoading] = useState(false)
+
 
   const choice1 = "main hall"
   const choice2 = "back door tunnels"
 
   useEffect(() => {
     GetUser(tokenId)
-    if (trigger == true) {
-      check()
-    }
 
-  }, [trigger])
+  }, [])
 
   async function check() {
     let res = await GetUser(tokenId)
@@ -80,9 +78,11 @@ export default function Patio() {
       console.log("choiceToSurvive", choiceToSurvive)
       console.log("res: ", res)
       await GetUser(tokenId)
-      setTrigger(true)
-      //setIsAlive(mstatus)
-      //setLocation(loc)
+      console.log(mstatus)
+      console.log(loc)
+      setTimeout(() => {
+        check()
+      }, 1500);
     } catch (e) {
       console.error(e)
     }

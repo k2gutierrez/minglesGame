@@ -34,7 +34,7 @@ export default function FermentationRoom() {
   const [lvl, setLvl] = useState(0)
   const [cstage, setCstage] = useState(0)
   const [crevive, setCrevive] = useState()
-  const [trigger, setTrigger] = useState(false)
+
   const [message, setMessage] = useState("")
 
   const [loading, setLoading] = useState(false)
@@ -44,11 +44,8 @@ export default function FermentationRoom() {
 
   useEffect(() => {
     GetUser(tokenId)
-    if (trigger == true) {
-      check()
-    }
 
-  }, [trigger])
+  }, [])
 
   async function check() {
     let res = await GetUser(tokenId)
@@ -68,6 +65,7 @@ export default function FermentationRoom() {
 
   async function Choice(_nft, _location, _num) {
     if (tokenId == null) return
+
     setLoading(true)
     try {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
@@ -81,9 +79,9 @@ export default function FermentationRoom() {
       await GetUser(tokenId)
       console.log(mstatus)
       console.log(loc)
-      setTrigger(true)
-      //setIsAlive(mstatus)
-      //setLocation(loc)
+      setTimeout(() => {
+        check()
+      }, 1500);
     } catch (e) {
       console.error(e)
     }

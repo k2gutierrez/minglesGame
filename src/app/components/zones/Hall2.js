@@ -34,7 +34,6 @@ export default function Hall2() {
   const [lvl, setLvl] = useState(0)
   const [cstage, setCstage] = useState(0)
   const [crevive, setCrevive] = useState()
-  const [trigger, setTrigger] = useState(false)
   const [message, setMessage] = useState("")
 
   const [loading, setLoading] = useState(false)
@@ -43,12 +42,9 @@ export default function Hall2() {
   const choice2 = "private cava"
 
   useEffect(() => {
-    GetUser(tokenId)
-    if (trigger == true) {
-      check()
-    }
-
-  }, [trigger])
+      GetUser(tokenId)
+  
+    }, [])
 
   async function check() {
     let res = await GetUser(tokenId)
@@ -81,9 +77,9 @@ export default function Hall2() {
       await GetUser(tokenId)
       console.log(mstatus)
       console.log(loc)
-      setTrigger(true)
-      //setIsAlive(mstatus)
-      //setLocation(loc)
+      setTimeout(() => {
+        check()
+      }, 1500);
     } catch (e) {
       console.error(e)
     }
