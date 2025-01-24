@@ -129,7 +129,7 @@ export default function OvenRoom() {
               </div>
             </div>
             {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
-            {message != "" && (<p className="mt-2 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
+            {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
             <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE OVEN ROOM" : "YOU'RE STILL IN THE OVEN ROOM"}</p>
             <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
             <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">The heat is intense, and the shadows are alive with danger.</p>
