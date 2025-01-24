@@ -42,15 +42,15 @@ export default function RavenNest() {
   const onlyChoice = "basement prison"
 
   useEffect(() => {
-      GetUser(tokenId)
-  
-    }, [])
+    GetUser(tokenId)
+
+  }, [])
 
   async function check() {
     let res = await GetUser(tokenId)
     console.log(res)
     setTimeout(() => {
-      if (loc == "raven nest"){
+      if (loc == "raven nest") {
         setMessage("Mayahuel has given you a second chance to pass this stage!")
         setLoading(false)
         setIsAlive(mstatus)
@@ -58,7 +58,7 @@ export default function RavenNest() {
         setIsAlive(mstatus)
         setLocation(loc)
       }
-      
+
     }, 1500);
   }
 
@@ -135,12 +135,14 @@ export default function RavenNest() {
       ) : (
         <>
           <div className="grid text-center mt-6">
-            <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
-            </div>
+            <video className="px-5" width="600" height="600" autoPlay controls preload="none">
+              <source src="/videos/Ravens_Nest.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
           {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
           {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
-          <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE RAVEN NEST" : "YOU'RE STILL IN THE RAVEN NEST"}</p>
+          <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE RAVEN NEST" : "YOU'RE STILL IN THE RAVEN NEST"}</p>
           <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">
             You’re in the Giant Raven’s lair—talons scrape, shadows move.

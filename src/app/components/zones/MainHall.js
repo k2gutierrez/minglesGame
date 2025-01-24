@@ -51,7 +51,7 @@ export default function MainHall() {
     let res = await GetUser(tokenId)
     console.log(res)
     setTimeout(() => {
-      if (loc == "main hall"){
+      if (loc == "main hall") {
         setMessage("Mayahuel has given you a second chance to pass this stage!")
         setLoading(false)
         setIsAlive(mstatus)
@@ -59,7 +59,7 @@ export default function MainHall() {
         setIsAlive(mstatus)
         setLocation(loc)
       }
-      
+
     }, 1500);
   }
 
@@ -125,12 +125,14 @@ export default function MainHall() {
         ) : (
           <>
             <div className="grid text-center mt-6">
-              <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
-              </div>
+              <video className="px-5" width="600" height="600" autoPlay controls preload="none">
+                <source src="/videos/main_hall.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
             {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
             {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
-            <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE MAIN HALL" : "YOU'RE STILL IN THE MAIN HALL"}</p>
+            <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE MAIN HALL" : "YOU'RE STILL IN THE MAIN HALL"}</p>
             <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
             <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">You push through the doors—tequila fills the air, but so does danger.</p>
             <div className="mt-5 mb-10 flex items-center justify-center">

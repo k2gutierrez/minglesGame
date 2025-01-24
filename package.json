@@ -19,6 +19,7 @@
     "next-scratchcard": "^0.0.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-player": "^2.16.0",
     "react-share-social": "^0.1.60",
     "react-tweet": "^3.2.1",
     "react-twitter-embed": "^4.0.4",

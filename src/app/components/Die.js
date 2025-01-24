@@ -8,27 +8,29 @@ import { WalletContext } from "@/app/context/wallet";
 export default function Die() {
 
   const {
-      isConnected,
-      setIsConnected,
-      userAddress,
-      setUserAddress,
-      signer,
-      setSigner,
-      provider,
-      setProvider,
-      location,
-      setLocation,
-      tokenId,
-      setTokenId,
-      isAlive,
-      setIsAlive
-    } = useContext(WalletContext);
+    isConnected,
+    setIsConnected,
+    userAddress,
+    setUserAddress,
+    signer,
+    setSigner,
+    provider,
+    setProvider,
+    location,
+    setLocation,
+    tokenId,
+    setTokenId,
+    isAlive,
+    setIsAlive
+  } = useContext(WalletContext);
 
   return (
     <>
       <div className="grid text-center mt-10">
-        <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
-        </div>
+        <video className="px-5" width="600" height="600" autoPlay controls preload="none">
+          <source src="/videos/death_final.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
       <p className="mt-5 text-black text-md font-[family-name:var(--font-hogfish)]">YOU DIED</p>
       <Image className="mt-4" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />

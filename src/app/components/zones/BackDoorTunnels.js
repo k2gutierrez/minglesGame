@@ -8,6 +8,7 @@ import { ethers } from "ethers";
 import { gameABI } from "@/app/abis/gameABI";
 import { toBytes } from "viem";
 import Loader from "../Loader";
+import ReactPlayer from "react-player/lazy";
 
 export default function BackDoorTunnels() {
 
@@ -50,7 +51,7 @@ export default function BackDoorTunnels() {
     let res = await GetUser(tokenId)
     console.log(res)
     setTimeout(() => {
-      if (loc == "back door tunnels"){
+      if (loc == "back door tunnels") {
         setMessage("Mayahuel has given you a second chance to pass this stage!")
         setLoading(false)
         setIsAlive(mstatus)
@@ -58,7 +59,7 @@ export default function BackDoorTunnels() {
         setIsAlive(mstatus)
         setLocation(loc)
       }
-      
+
     }, 1500);
   }
 
@@ -124,17 +125,23 @@ export default function BackDoorTunnels() {
         ) : (
           <>
             <div className="grid text-center mt-6">
-              <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
-              </div>
+              {/*<ReactPlayer pip width={300} height={300} url={"/videos/backdoor_runway.mp4"} controls />*/}
+              <video className="px-5" width="600" height="600" autoPlay controls preload="none">
+                <source src="/videos/backdoor_runway.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+
             </div>
             {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
             {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
-            <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE BACK DOOR TUNNELS" : "YOU'RE STILL IN THE BACK DOOR TUNNELS"}</p>
+            <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE BACK DOOR TUNNELS" : "YOU'RE STILL IN THE BACK DOOR TUNNELS"}</p>
             <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
             <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">Dark, damp, and definitely bad vibes. What’s waiting down here?</p>
             <div className="mt-5 mb-10 flex items-center justify-center">
-              <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >A. The damp walls lead you deeper into the unknown.</button>
-              <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c2} >B. The scent of aged wood pulls you toward another path.</button>
+              <button className={cls(styles.backColor, "button text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
+                A. The damp walls lead you deeper into the unknown.
+              </button>
+              <button className={cls(styles.backColor, "button text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c2} >B. The scent of aged wood pulls you toward another path.</button>
             </div>
           </>
         )

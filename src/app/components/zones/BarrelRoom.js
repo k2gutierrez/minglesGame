@@ -52,7 +52,7 @@ export default function BarrelRoom() {
     let res = await GetUser(tokenId)
     console.log(res)
     setTimeout(() => {
-      if (loc == "barrel room"){
+      if (loc == "barrel room") {
         setMessage("Mayahuel has given you a second chance to pass this stage!")
         setLoading(false)
         setIsAlive(mstatus)
@@ -60,7 +60,7 @@ export default function BarrelRoom() {
         setIsAlive(mstatus)
         setLocation(loc)
       }
-      
+
     }, 1500);
   }
 
@@ -124,22 +124,24 @@ export default function BarrelRoom() {
         (
           <Loader />
         ) : (
-      <>
-        <div className="grid text-center mt-6">
-          <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
-          </div>
-        </div>
-        {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
-        {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
-        <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE BARREL ROOM" : "YOU'RE STILL IN THE BARREL ROOM"}</p>
-        <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
-        <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">A maze of barrels—rich tequila scents and lurking threats.</p>
-        <div className="mt-5 mb-10 flex items-center justify-center">
-          <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >A. The scent of oak leads you toward a shadowy passage.</button>
-          <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c2} >B. Faint whispers echo from a nearby opening.</button>
-        </div>
-      </>
-      )
+          <>
+            <div className="grid text-center mt-6">
+              <video className="px-5" width="600" height="600" autoPlay controls preload="none">
+                <source src="/videos/barrel_room.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
+            {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
+            <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE BARREL ROOM" : "YOU'RE STILL IN THE BARREL ROOM"}</p>
+            <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+            <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">A maze of barrels—rich tequila scents and lurking threats.</p>
+            <div className="mt-5 mb-10 flex items-center justify-center">
+              <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >A. The scent of oak leads you toward a shadowy passage.</button>
+              <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c2} >B. Faint whispers echo from a nearby opening.</button>
+            </div>
+          </>
+        )
       }
     </>
   )

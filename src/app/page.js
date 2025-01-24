@@ -125,8 +125,8 @@ export default function Home() {
   return (
     <div className="grid justify-items-center text-black font-[family-name:var(--font-pressura)]">
       <div className={cls(styles.backColor, "min-w-full px-1 flex items-center justify-center text-black text-sm")}>
-        <p className="me-10">The GIANT RAVEN's game [on chain]</p>
-        <button onClick={() => setLocation("")}><Image src={logo} alt="Mingles Logo" width={60} height={60} /></button>
+        <p className="me-10 p-1">The GIANT RAVEN's game [on chain]</p>
+        <button className="p-1" onClick={() => setLocation("")}><Image src={logo} alt="Mingles Logo" width={60} height={60} /></button>
       </div>
       {location == "" && (
         <Login connect={connectWallet} getMingles={getMingles} />
