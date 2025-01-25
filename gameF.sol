@@ -145,7 +145,8 @@ contract NftGame {
         emit FailedAdventure();
 
         for (uint256 i; i < registros.length; i++) {
-            users[registros[i]].status = false;
+            users[registros[i]].status = true;
+            users[registros[i]].revive = true;
             users[registros[i]].stage = 0;
             users[registros[i]].location = "";
         }
@@ -190,8 +191,7 @@ contract NftGame {
             registros.push(_nft);
             return true;
         }
-        users[_nft].status = true;
-        users[_nft].revive = true;
+        users[_nft].location = _location;
         registros.push(_nft);
         return true;
     }
@@ -322,29 +322,26 @@ contract NftGame {
                 return true;
             }
             return true;
-        } else {
-            if (users[_nft].revive == true){
-                uint256 yourChanceToRevive = users[_nft].wormLvl;
-                uint256 decition = randomchoices() + 1;
-                if (decition <= yourChanceToRevive) {
-                    //users[_nft].status = true;
-                    users[_nft].revive = false;
-                    emit MayahuelRevivedYou(_nft);
-                    return true;
-                } else {
-                    jugadoresPerdidos.push(_nft);
-                    users[_nft].revive = false;
-                    users[_nft].status = false;
-                    users[_nft].location = deadLocation;
-                    return false;
-                }
+        } else if (randomNumber <= num && users[_nft].revive == true) {
+            uint256 yourChanceToRevive = users[_nft].wormLvl;
+            uint256 decition = randomchoices() + 1;
+            users[_nft].revive = false;
+            if (decition <= yourChanceToRevive) {
+                emit MayahuelRevivedYou(_nft);
+                return true;
             } else {
                 jugadoresPerdidos.push(_nft);
                 users[_nft].status = false;
                 users[_nft].location = deadLocation;
                 return false;
-            }
+                }
+        } else if (randomNumber <= num && users[_nft].revive == false) {
+            jugadoresPerdidos.push(_nft);
+            users[_nft].status = false;
+            users[_nft].location = deadLocation;
+            return false;
         }
+        return false;
         
     }
 
@@ -359,7 +356,7 @@ contract NftGame {
 
         bytes32 deadLocation = "dead";
         uint256 randomNumer = randomchoices() + 1;
-        if (randomNumer > 25) {
+        if (randomNumer > 50) {
             users[_nft].location = _location;
             users[_nft].stage ++;
 
@@ -367,31 +364,28 @@ contract NftGame {
 
             return true;
 
-        } else {
-            if (users[_nft].revive == false){
+        } else if (randomNumer <= 50 && users[_nft].revive == false) {
+            users[_nft].status = false;
+            jugadoresPerdidos.push(_nft);
+            users[_nft].location = deadLocation;
+            return false;
+            
+        } else if (randomNumer <= 50 && users[_nft].revive == true) {
+            uint256 yourChanceToRevive = users[_nft].wormLvl;
+            uint256 decition = randomchoices() + 1;
+            users[_nft].revive = false;
+            if (decition <= yourChanceToRevive) {    
+                emit MayahuelRevivedYou(_nft);
+                return true;
+
+            } else {
                 jugadoresPerdidos.push(_nft);
                 users[_nft].status = false;
                 users[_nft].location = deadLocation;
-            
                 return false;
-            } else {
-                uint256 yourChanceToRevive = users[_nft].wormLvl;
-                uint256 decition = randomchoices() + 1;
-                if (decition <= yourChanceToRevive) {
-                    //users[_nft].status = true;
-                    users[_nft].revive = false;
-                    emit MayahuelRevivedYou(_nft);
-                    return true;
-                } else {
-                    jugadoresPerdidos.push(_nft);
-                    users[_nft].revive = false;
-                    users[_nft].status = false;
-                    users[_nft].location = deadLocation;
-                    return false;
-                }
             }
         }
-
+        return false;
     }
 
     ////////////////////// Trigger random choice to compare with "dead" function
@@ -473,12 +467,14 @@ contract NftGame {
         require(gamePaused == true, "Game must be paused");
 
         for (uint256 i; i < registros.length; i++) {
-            users[mingles[i]].status = false;
+            users[registros[i]].status = true;
+            users[registros[i]].revive = true;
             users[registros[i]].stage = 0;
             users[registros[i]].location = "";
         }
 
         delete finalBattle;
+        delete jugadoresPerdidos;
         delete registros;
         delete mingles;
         nftAddress = address(0);
