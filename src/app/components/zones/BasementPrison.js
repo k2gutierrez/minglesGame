@@ -132,8 +132,8 @@ export default function BasementPrison() {
       )
         : (<>
           <div className="grid text-center mt-6">
-            <video className="px-5" width="600" height="600" autoPlay controls preload="none">
-              <source src="/videos/Escape.mp4" type="video/mp4" />
+            <video className="px-5" width="600" height="600" autoPlay loop controls preload="none">
+              <source src="/videos/Escape.mov" />
               Your browser does not support the video tag.
             </video>
           </div>

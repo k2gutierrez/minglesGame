@@ -31,6 +31,11 @@ export const gameABI = [
 	},
 	{
 		"inputs": [],
+		"name": "NftGame__MingleCannotRevive",
+		"type": "error"
+	},
+	{
+		"inputs": [],
 		"name": "NftGame__MingleNotOwned",
 		"type": "error"
 	},

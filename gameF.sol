@@ -288,19 +288,22 @@ contract NftGame {
         if (ERC721(nftAddressPlayer).ownerOf(_nft) != msg.sender) revert NftGame__MingleNotOwned();
         if (users[_nft].revive == false) revert NftGame__MingleCannotRevive();
 
-        bytes32 deadLocation = "dead";
-        uint256 yourChanceToRevive = users[_nft].wormLvl;
+        bytes32 deadLocation = 0x6465616400000000000000000000000000000000000000000000000000000000;
+        User storage mingle = users[_nft];
+        uint256 yourChanceToRevive = mingle.wormLvl;
         uint256 decition = randomchoices() + 1;
         if (decition <= yourChanceToRevive) {
-            users[_nft].status = true;
-            users[_nft].revive = false;
+            mingle.revive = false;
             emit MayahuelRevivedYou(_nft);
             return true;
+        } else {
+            mingle.revive = false;
+            mingle.status = false;
+            mingle.location = deadLocation;
+            jugadoresPerdidos.push(_nft);
+            return false;
         }
-        jugadoresPerdidos.push(_nft);
-        users[_nft].revive = false;
-        users[_nft].location = deadLocation;
-        return false;
+        
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -312,39 +315,27 @@ contract NftGame {
         if (users[_nft].status = false) revert NftGame__NftIsDead();
         if (users[_nft].stage == 6) revert NftGame__AlreadyASurvivor();
 
-        bool reviveStatus = users[_nft].revive;
-        bytes32 deadLocation = "dead";
+        User storage mingle = users[_nft];
+        bytes32 deadLocation = 0x6465616400000000000000000000000000000000000000000000000000000000;
         uint256 randomNumber = randomchoices() + 1; 
         if (randomNumber > num) {
-            users[_nft].location = _location;
-            users[_nft].stage ++;
+            mingle.location = _location;
+            mingle.stage ++;
 
-            if (users[_nft].stage == 6){
+            if (mingle.stage == 6){
                 finalBattle.push(_nft);
-                return true;
             }
             return true;
         } else {
 
-            if (reviveStatus == true) {
+            if (mingle.revive == true) {
 
-                users[_nft].revive = false;
-                uint256 yourChanceToRevive = users[_nft].wormLvl;
-                uint256 decition = randomchoices() + 1;
-                if (decition <= yourChanceToRevive) {
-                    emit MayahuelRevivedYou(_nft);
-                    return true;
-                } else {
-                    jugadoresPerdidos.push(_nft);
-                    users[_nft].status = false;
-                    users[_nft].location = deadLocation;
-                    return false;
-                }
+                return reviveMingle(_nft);
 
             } else {
+                mingle.status = false;
+                mingle.location = deadLocation;
                 jugadoresPerdidos.push(_nft);
-                users[_nft].status = false;
-                users[_nft].location = deadLocation;
                 return false;
             }
 
@@ -361,12 +352,12 @@ contract NftGame {
         if (users[_nft].status = false) revert NftGame__NftIsDead();
         require(gamePaused == true, "Game must be paused");
 
-        bool reviveStatus = users[_nft].revive;
-        bytes32 deadLocation = "dead";
+        User storage mingle = users[_nft];
+        bytes32 deadLocation = 0x6465616400000000000000000000000000000000000000000000000000000000;
         uint256 randomNumer = randomchoices() + 1;
         if (randomNumer > 50) {
-            users[_nft].location = _location;
-            users[_nft].stage ++;
+            mingle.location = _location;
+            mingle.stage ++;
 
             mingles.push(_nft);
 
@@ -374,28 +365,15 @@ contract NftGame {
 
         } else {
 
-            if (reviveStatus == true) {
+            if (mingle.revive == true) {
                 
-                users[_nft].revive = false;
-                uint256 yourChanceToRevive = users[_nft].wormLvl;
-                uint256 decition = randomchoices() + 1;
-            
-                if (decition <= yourChanceToRevive) {    
-                    emit MayahuelRevivedYou(_nft);
-                    return true;
-
-                } else {
-                    jugadoresPerdidos.push(_nft);
-                    users[_nft].status = false;
-                    users[_nft].location = deadLocation;
-                    return false;
-                }
+                return reviveMingle(_nft);
 
             } else {
 
-                users[_nft].status = false;
+                mingle.status = false;
                 jugadoresPerdidos.push(_nft);
-                users[_nft].location = deadLocation;
+                mingle.location = deadLocation;
                 return false;
 
             }
