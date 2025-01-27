@@ -127,7 +127,7 @@ export default function PrivateCava() {
         <>
           <div className="grid text-center mt-6">
             <video className="px-5" width="600" height="600" autoPlay loop controls preload="none">
-              <source src="/videos/Private Cava.mov" />
+              <source src="/videos/Private_Cava.mov" />
               Your browser does not support the video tag.
             </video>
           </div>

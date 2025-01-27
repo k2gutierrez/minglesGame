@@ -128,7 +128,7 @@ export default function Hall1() {
         <>
           <div className="grid text-center mt-6">
             <video className="px-5" width="600" height="600" autoPlay loop controls preload="none">
-              <source src="/videos/Hall 1.mov" />
+              <source src="/videos/Hall_1.mov" />
               Your browser does not support the video tag.
             </video>
           </div>

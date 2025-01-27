@@ -129,7 +129,7 @@ export default function DistilleryRoom() {
           <>
             <div className="grid text-center mt-6">
               <video className="px-5" width="600" height="600" autoPlay loop controls preload="none">
-                <source src="/videos/Distillery Room.mov" />
+                <source src="/videos/Distillery_Room.mov" />
                 Your browser does not support the video tag.
               </video>
             </div>
