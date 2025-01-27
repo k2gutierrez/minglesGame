@@ -38,29 +38,35 @@ export default function OvenRoom() {
   const [message, setMessage] = useState("")
 
   const [loading, setLoading] = useState(false)
+  let [counter, setCounter] = useState(0)
 
   const choice1 = "hall1"
   const choice2 = "hall2"
 
   useEffect(() => {
     GetUser(tokenId)
+    console.log(counter)
+    if (counter > 0) {
+      setTimeout(() => {
+        check(tokenId)
+      }, 1000);
+    }
 
-  }, [])
+  }, [counter])
 
-  async function check() {
-    let res = await GetUser(tokenId)
-    console.log(res)
+  async function check(nft) {
+    GetUser(nft)
     setTimeout(() => {
       if (loc == "oven room") {
         setMessage("Mayahuel has given you a second chance to pass this stage!")
         setLoading(false)
-        setIsAlive(mstatus)
-      } else {
-        setIsAlive(mstatus)
-        setLocation(loc)
       }
 
-    }, 1500);
+    }, 2000);
+  }
+
+  function increase() {
+    setCounter(counter + 1)
   }
 
   async function Choice(_nft, _location, _num) {
@@ -73,14 +79,8 @@ export default function OvenRoom() {
         gasPrice: ethers.parseUnits("10", "gwei")
       })
       const res = await choiceToSurvive.wait()
-      console.log("choiceToSurvive", choiceToSurvive)
-      console.log("res: ", res)
-      await GetUser(tokenId)
-      console.log(mstatus)
-      console.log(loc)
-      setTimeout(() => {
-        check()
-      }, 1500);
+      increase()
+
     } catch (e) {
       console.error(e)
     }
@@ -111,6 +111,9 @@ export default function OvenRoom() {
       setCstage(Cstage)
       let Crevive = getUser[5]
       setCrevive(Crevive)
+      if (counter > 0) {
+        setLocation(loc)
+      }
 
     } catch (e) {
       console.error(e)

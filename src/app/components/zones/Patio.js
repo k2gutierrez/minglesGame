@@ -40,31 +40,36 @@ export default function Patio() {
 
   const [loading, setLoading] = useState(false)
 
+  let [counter, setCounter] = useState(0)
+
 
   const choice1 = "main hall"
   const choice2 = "back door tunnels"
 
   useEffect(() => {
     GetUser(tokenId)
+    console.log(counter)
+    if (counter > 0) {
+      setTimeout(() => {
+        check(tokenId)
+      }, 1000);
+    }
 
-  }, [])
+  }, [counter])
 
-  async function check() {
-    let res = await GetUser(tokenId)
-    
+  async function check(nft) {
+    GetUser(nft)
     setTimeout(() => {
-      console.log("user", res)
       if (loc == "patio") {
         setMessage("Mayahuel has given you a second chance to pass this stage!")
         setLoading(false)
-        setIsAlive(mstatus)
-      } else {
-        setIsAlive(mstatus)
-        
       }
-      setLocation(loc)
 
     }, 2000);
+  }
+
+  function increase() {
+    setCounter(counter + 1)
   }
 
   async function Choice(_nft, _location, _num) {
@@ -77,10 +82,8 @@ export default function Patio() {
         gasPrice: ethers.parseUnits("10", "gwei")
       })
       const res = await choiceToSurvive.wait()
-      console.log("choiceToSurvive", choiceToSurvive)
-      console.log("res: ", res)
-      check()
-      
+      increase()
+
     } catch (e) {
       console.error(e)
     }
@@ -111,6 +114,10 @@ export default function Patio() {
       setCstage(Cstage)
       let Crevive = getUser[5]
       setCrevive(Crevive)
+      if (counter > 0) {
+        setLocation(loc)
+      }
+
 
     } catch (e) {
       console.error(e)
@@ -125,7 +132,7 @@ export default function Patio() {
         : (<>
           <div className="grid text-center mt-6">
             <video className="px-5" width="600" height="600" autoPlay loop controls preload="none">
-              <source src="/videos/Patio.mov"  />
+              <source src="/videos/Patio.mov" />
               Your browser does not support the video tag.
             </video>
           </div>
