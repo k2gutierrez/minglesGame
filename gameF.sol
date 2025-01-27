@@ -155,6 +155,7 @@ contract NftGame {
         delete registros;
         delete jugadoresPerdidos;
         delete mingles;
+        gamePaused = false;
         nftAddress = address(0);
         nftId = 0;
         gameStatus = false;
@@ -293,6 +294,7 @@ contract NftGame {
         uint256 yourChanceToRevive = mingle.wormLvl;
         uint256 decition = randomchoices() + 1;
         if (decition <= yourChanceToRevive) {
+            mingle.status = true;
             mingle.revive = false;
             emit MayahuelRevivedYou(_nft);
             return true;
@@ -319,6 +321,7 @@ contract NftGame {
         bytes32 deadLocation = 0x6465616400000000000000000000000000000000000000000000000000000000;
         uint256 randomNumber = randomchoices() + 1; 
         if (randomNumber > num) {
+            mingle.status = true;
             mingle.location = _location;
             mingle.stage ++;
 
@@ -326,20 +329,17 @@ contract NftGame {
                 finalBattle.push(_nft);
             }
             return true;
-        } else {
+        } else if (randomNumber <= num && mingle.revive == true) {
 
-            if (mingle.revive == true) {
+            return reviveMingle(_nft);
 
-                return reviveMingle(_nft);
-
-            } else {
-                mingle.status = false;
-                mingle.location = deadLocation;
-                jugadoresPerdidos.push(_nft);
-                return false;
-            }
-
+        } else if (randomNumber <= num && mingle.revive == false) {
+            mingle.status = false;
+            mingle.location = deadLocation;
+            jugadoresPerdidos.push(_nft);
+            return false;
         }
+        return false;
         
     }
 
@@ -356,6 +356,7 @@ contract NftGame {
         bytes32 deadLocation = 0x6465616400000000000000000000000000000000000000000000000000000000;
         uint256 randomNumer = randomchoices() + 1;
         if (randomNumer > 50) {
+            mingle.status = true;
             mingle.location = _location;
             mingle.stage ++;
 
@@ -363,22 +364,19 @@ contract NftGame {
 
             return true;
 
-        } else {
-
-            if (mingle.revive == true) {
+        } else if (randomNumer <= 50 && mingle.revive == true) {
                 
-                return reviveMingle(_nft);
+            return reviveMingle(_nft);
 
-            } else {
+        } else if (randomNumer <= 50 && mingle.revive == false) {
 
-                mingle.status = false;
-                jugadoresPerdidos.push(_nft);
-                mingle.location = deadLocation;
-                return false;
-
-            }
+            mingle.status = false;
+            jugadoresPerdidos.push(_nft);
+            mingle.location = deadLocation;
+            return false;
 
         }
+        return false;
         
     }
 
@@ -471,6 +469,7 @@ contract NftGame {
         delete jugadoresPerdidos;
         delete registros;
         delete mingles;
+        gamePaused = false;
         nftAddress = address(0);
         nftId = 0;
         gameStatus = false;
