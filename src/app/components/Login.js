@@ -49,9 +49,14 @@ export default function Login({ connect, getMingles }) {
       }
       {isConnected &&
         (
+          <>
           <div className="flex items-center justify-center">
-            <button className={cls(styles.backColor, "my-8 text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("board")} >check the playerboard</button>
+            <button className={cls(styles.backColor, "my-3 text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("rules")} >RULES</button>
           </div>
+          <div className="flex items-center justify-center">
+            <button className={cls(styles.backColor, "my-2 text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("board")} >check the playerboard</button>
+          </div>
+          </>
         )
       }
     </>

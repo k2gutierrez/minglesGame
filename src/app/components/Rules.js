@@ -9,7 +9,7 @@ import { ethers } from "ethers";
 import { ABI } from "../abis/mingleABI";
 import { keccak256, toBytes } from "viem";
 
-export default function Rules() {
+export default function Rules({getMingles}) {
 
   return (
     <>
@@ -39,10 +39,10 @@ export default function Rules() {
         If no one survives, the game restarts, and the prize returns to the pool.</p>
       </div>
       <div className="flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-sm mx-5 w-32 p-1 rounded-xl")}>Pick your mingle</button>
+        <button className={cls(styles.backColor, "text-sm mx-5 w-32 p-1 rounded-xl")} onClick={getMingles} >Pick your mingle</button>
       </div>
       <div className="flex items-center justify-center">
-        <button className={cls(styles.backColor, "my-5 text-sm mx-5 w-32 p-1 rounded-xl")}>check the playerboard</button>
+        <button className={cls(styles.backColor, "my-5 text-sm mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("board")} >check the playerboard</button>
       </div>
     </>
   )

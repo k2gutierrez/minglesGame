@@ -204,6 +204,10 @@ export default function Home() {
         <Board />
       )
       }
+      {location == "rules" && (
+        <Rules getMingles={getMingles} />
+      )
+      }
     </div>
   );
 }
