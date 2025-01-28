@@ -17,7 +17,7 @@ export default function Won() {
       <Image className="mt-4" src={mingle} alt="Mingle" width={60} height={60} />
       <p className="my-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">Claim your prize</p>
       <div className="flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} >yes</button>
+        <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} >Yes</button>
         <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} >SHARE ON X</button>
       </div>
     </>

@@ -352,10 +352,11 @@ contract NftGame {
         if (users[_nft].status = false) revert NftGame__NftIsDead();
         require(gamePaused == true, "Game must be paused");
 
+        uint256 percentageToDie = 60;
         User storage mingle = users[_nft];
         bytes32 deadLocation = 0x6465616400000000000000000000000000000000000000000000000000000000;
         uint256 randomNumer = randomchoices() + 1;
-        if (randomNumer > 50) {
+        if (randomNumer > percentageToDie) {
             mingle.status = true;
             mingle.location = _location;
             mingle.stage ++;
@@ -364,11 +365,11 @@ contract NftGame {
 
             return true;
 
-        } else if (randomNumer <= 50 && mingle.revive == true) {
+        } else if (randomNumer <= percentageToDie && mingle.revive == true) {
                 
             return reviveMingle(_nft);
 
-        } else if (randomNumer <= 50 && mingle.revive == false) {
+        } else if (randomNumer <= percentageToDie && mingle.revive == false) {
 
             mingle.status = false;
             jugadoresPerdidos.push(_nft);
