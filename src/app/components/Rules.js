@@ -8,14 +8,15 @@ import { BrowserProvider } from "ethers";
 import { ethers } from "ethers";
 import { ABI } from "../abis/mingleABI";
 import { keccak256, toBytes } from "viem";
+import prize from "../../../public/assets/prize.jpg";
 
 export default function Rules({getMingles}) {
 
   return (
     <>
       <div className="grid text-center mt-10">
-        <div className={cls(styles.marginBack, "z-10 grid justify-items-center border border-black text-center items-end rounded-2xl h-40 w-40 mx-9")}>
-
+        <div className={cls(styles.marginBack, "z-10 grid justify-items-center text-center items-end h-40 w-40 mx-9")}>
+          <Image className="rounded-2xl" src={prize} alt={prize} width={180} height={180} />
         </div>
         <div className={cls(styles.backColor, "z-0 grid justify-items-center text-center items-end rounded-2xl h-48 w-48 m-5")}>
           <p className="pt-10 text-black text-xs font-[family-name:var(--font-hogfish)]">MINGLES</p>

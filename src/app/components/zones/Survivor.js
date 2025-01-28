@@ -7,6 +7,7 @@ import { WalletContext } from "@/app/context/wallet";
 import { ethers } from "ethers";
 import { gameABI } from "@/app/abis/gameABI";
 import { toBytes } from "viem";
+import prize from "../../../../public/assets/prize.jpg";
 
 export default function Survivor() {
 
@@ -104,8 +105,7 @@ export default function Survivor() {
   return (
     <>
       <div className="grid text-center mt-6">
-        <div className={cls(styles.backColor, "grid justify-items-center text-center items-end rounded-3xl h-64 w-64 m-5")}>
-        </div>
+        <Image className="rounded-2xl" src={prize} alt={prize} width={180} height={180} />
       </div>
       <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ESCAPED THE BASEMENT PRISON</p>
       <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
