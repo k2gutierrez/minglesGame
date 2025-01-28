@@ -75,7 +75,7 @@ export default function NoMingle() {
       </div>
       <p className='mt-10 font-[family-name:var(--font-hogfish)]'>Enter Mingle ID#</p>
       <div className="text-center space-y-2 mb-6">
-        <input placeholder="Mingle ID" className={"text-black text-center text-base border border-red-500  rounded-md font-[family-name:var(--font-pressura)]"} onChange={e => setToken(e.target.value)}></input>
+        <input placeholder="4545" className={"text-black text-center text-base border border-red-500  rounded-md font-[family-name:var(--font-pressura)]"} onChange={e => setToken(e.target.value)}></input>
         <button
           className="ms-2 center rounded-lg bg-red-500 p-1 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           data-ripple-light="true"
