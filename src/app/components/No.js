@@ -24,7 +24,7 @@ export default function No() {
       </div>
       <p className="my-5 text-black text-md font-[family-name:var(--font-hogfish)]">READY?</p>
       <div className="flex items-center justify-center">
-        <button className={cls(styles.backColor, "my-10 text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("")} >okay I'll go</button>
+        <button className={cls(styles.backColor, "my-10 text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={() => setLocation("")} >okay I'll go</button>
       </div>
     </>
   )

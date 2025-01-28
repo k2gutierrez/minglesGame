@@ -38,12 +38,12 @@ export default function Login({ connect, getMingles }) {
       <p className="my-5 text-black text-md font-[family-name:var(--font-hogfish)]">DO YOU ACCEPT THE CALL?</p>
       {userAddress != null ? (
         <div className="flex items-center justify-center">
-          <button className={cls(styles.backColor, "my-8 text-base mx-5 w-32 p-1 rounded-xl")} onClick={getMingles} >Enlist Mingle</button>
+          <button className={cls(styles.backColor, "my-8 text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={getMingles} >Enlist Mingle</button>
         </div>
       ) : (
         <div className="flex items-center justify-center">
-          <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} onClick={connect} >yes</button>
-          <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("no")}>no</button>
+          <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={connect} >yes</button>
+          <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={() => setLocation("no")}>no</button>
         </div>
       )
 
@@ -52,10 +52,10 @@ export default function Login({ connect, getMingles }) {
         (
           <>
           <div className="flex items-center justify-center">
-            <button className={cls(styles.backColor, "my-3 text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("rules")} >RULES</button>
+            <button className={cls(styles.backColor, "my-3 text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={() => setLocation("rules")} >RULES</button>
           </div>
-          <div className="flex items-center justify-center">
-            <button className={cls(styles.backColor, "my-2 text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("board")} >check the playerboard</button>
+          <div className="flex mb-5 items-center justify-center">
+            <button className={cls(styles.backColor, "my-2 text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={() => setLocation("board")} >check the playerboard</button>
           </div>
           </>
         )

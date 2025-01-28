@@ -139,10 +139,10 @@ export default function Hall2() {
             The silence here is heavy, and every step feels like a risk.
           </p>
           <div className="mt-5 mb-10 flex items-center justify-center">
-            <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c1} >
+            <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={c1} >
               A. Bubbling intensifies as you near the source.
             </button>
-            <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl")} onClick={c2} >
+            <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={c2} >
               B. A faintly glowing doorway catches your eye.
             </button>
           </div>
