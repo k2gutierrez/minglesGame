@@ -30,7 +30,7 @@ export default function Login({ connect, getMingles }) {
           <Image className="rounded-2xl" src={prize} alt={prize} width={180} height={180} />
         </div>
         <div className={cls(styles.backColor, "z-0 grid justify-items-center text-center items-end rounded-2xl h-48 w-48 m-5")}>
-          <p className="pt-10 text-black text-xs font-[family-name:var(--font-hogfish)]">MINGLES</p>
+          <p className="pt-20 text-black text-xs font-[family-name:var(--font-hogfish)]">MINGLES</p>
           <p className="text-xs text-white font-[family-name:var(--font-pressura)]">Worms Raid</p>
           <p className="px-5 mb-2 text-black text-xs font-[family-name:var(--font-pressura)]">
             Defeat the GIANT RAVEN 
