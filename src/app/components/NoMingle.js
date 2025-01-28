@@ -84,11 +84,11 @@ export default function NoMingle() {
         </button>
       </div>
       {mstatus && (
-        <p className='mt-5 font-[family-name:var(--font-pressura)]'>Mingle is <span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Alive or not Registered</span></p>
+        <p className='mt-5 font-[family-name:var(--font-pressura)]'>Mingle is <span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Registered</span></p>
       ) 
       }
       {id == 0 && (
-        <p className='mt-5 font-[family-name:var(--font-pressura)]'>Mingle is <span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Alive or not Registered</span></p>
+        <p className='mt-5 font-[family-name:var(--font-pressura)]'>Mingle is <span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Not Registered</span></p>
       ) 
       }
       {id != 0 && mstatus == false ? (
