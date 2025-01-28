@@ -87,11 +87,11 @@ export default function Hall3() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 20)
+    Choice(tokenId, choice1, 35)
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 10)
+    Choice(tokenId, choice2, 30)
   }
 
   async function GetUser(nft) {

@@ -90,11 +90,11 @@ export default function Patio() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 10)
+    Choice(tokenId, choice1, 35)
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 15)
+    Choice(tokenId, choice2, 30)
   }
 
   async function GetUser(nft) {

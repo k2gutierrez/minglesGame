@@ -87,7 +87,7 @@ export default function BackDoorTunnels() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 10)
+    Choice(tokenId, choice1, 35)
   }
 
   const c2 = async () => {

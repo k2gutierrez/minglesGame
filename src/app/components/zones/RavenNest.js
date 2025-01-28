@@ -86,7 +86,7 @@ export default function RavenNest() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, onlyChoice, 10)
+    Choice(tokenId, onlyChoice, 20)
   }
 
   const c2 = async () => {
@@ -98,7 +98,7 @@ export default function RavenNest() {
   }
 
   const c4 = async () => {
-    Choice(tokenId, onlyChoice, 30)
+    Choice(tokenId, onlyChoice, 35)
   }
 
   const c5 = async () => {

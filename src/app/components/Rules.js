@@ -10,7 +10,26 @@ import { ABI } from "../abis/mingleABI";
 import { keccak256, toBytes } from "viem";
 import prize from "../../../public/assets/prize.jpg";
 
-export default function Rules({getMingles}) {
+export default function Rules({ getMingles }) {
+
+  const {
+    isConnected,
+    setIsConnected,
+    userAddress,
+    setUserAddress,
+    signer,
+    setSigner,
+    provider,
+    setProvider,
+    location,
+    setLocation,
+    tokenId,
+    setTokenId,
+    isAlive,
+    setIsAlive,
+    contract,
+    setContract
+  } = useContext(WalletContext);
 
   return (
     <>
@@ -25,25 +44,25 @@ export default function Rules({getMingles}) {
         </div>
       </div>
       <div className="mx-10 my-5 p-2 text-center">
-      <p className="mb-2text-black text-md font-[family-name:var(--font-hogfish)]">RULES</p>
-      <p className="mb-2 text-black text-sm font-[family-name:var(--font-pressura)]">
-        Each Mingle can raid only once.</p>
-      <p className="mb-2 text-black text-sm font-[family-name:var(--font-pressura)]">
-        If it dies, it cannot participate again-nor can anyone else use it.</p>
-      <p className="mb-2 text-black text-sm font-[family-name:var(--font-pressura)]">
-        Mayahuel may revive your Mingle once, depending on rarity.</p>
-      <p className="mb-2 text-black text-sm font-[family-name:var(--font-pressura)]">
-        Fully on-chain: every decision creates a new transaction.</p>
-      <p className="mb-2 text-black text-sm font-[family-name:var(--font-pressura)]">
-        The last hero standing wins the NFT prize automatically.</p>
-      <p className="mb-2 text-black text-sm font-[family-name:var(--font-pressura)]">
-        If no one survives, the game restarts, and the prize returns to the pool.</p>
+        <p className="mb-2 text-black text-md font-[family-name:var(--font-hogfish)]">RULES</p>
+        <p className="mb-4 text-black text-sm font-[family-name:var(--font-pressura)]">
+          Each Mingle can raid only once.</p>
+        <p className="mb-4 text-black text-sm font-[family-name:var(--font-pressura)]">
+          If it dies, it cannot participate again-nor can anyone else use it.</p>
+        <p className="mb-4 text-black text-sm font-[family-name:var(--font-pressura)]">
+          Mayahuel may revive your Mingle once, depending on rarity.</p>
+        <p className="mb-4 text-black text-sm font-[family-name:var(--font-pressura)]">
+          Fully on-chain: every decision creates a new transaction.</p>
+        <p className="mb-4 text-black text-sm font-[family-name:var(--font-pressura)]">
+          The last hero standing wins the NFT prize automatically.</p>
+        <p className="mb-2 text-black text-sm font-[family-name:var(--font-pressura)]">
+          If no one survives, the game restarts, and the prize returns to the pool.</p>
       </div>
       <div className="flex items-center justify-center">
-        <button className={cls(styles.backColor, "text-sm mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={getMingles} >Pick your mingle</button>
+        <button className={cls(styles.backColor, "text-sm mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={getMingles} >Pick your Mingle</button>
       </div>
       <div className="flex items-center justify-center">
-        <button className={cls(styles.backColor, "my-5 text-sm mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={() => setLocation("board")} >check the playerboard</button>
+        <button className={cls(styles.backColor, "my-5 text-sm mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={() => setLocation("board")} >Check the Playerboard</button>
       </div>
     </>
   )

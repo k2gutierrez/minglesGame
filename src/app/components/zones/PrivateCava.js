@@ -86,7 +86,7 @@ export default function PrivateCava() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 20)
+    Choice(tokenId, choice1, 30)
   }
 
   const c2 = async () => {

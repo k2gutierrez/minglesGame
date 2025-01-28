@@ -91,7 +91,7 @@ export default function DistilleryRoom() {
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 20)
+    Choice(tokenId, choice2, 35)
   }
 
   async function GetUser(nft) {
