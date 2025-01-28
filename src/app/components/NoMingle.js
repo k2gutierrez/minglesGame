@@ -70,7 +70,7 @@ export default function NoMingle() {
         <Link href={"https://magiceden.io/collections/apechain/0x6579cfd742d8982a7cdc4c00102d3087f6c6dd8e"} target='_blank' className={cls(styles.backColor, "text-center my-10 text-base w-32 p-1 rounded-xl")} >buy</Link>
       </div>
       <div className='rounded-2xl p-3 bg-black text-white text-center mx-10'>
-        <p className="text-md font-[family-name:var(--font-pressura)]">Check if your mingle is still alive or if it died in the raid</p>
+        <p className="text-md font-[family-name:var(--font-pressura)]">Check if your mingle can RAID or not</p>
 
       </div>
       <p className='mt-10 font-[family-name:var(--font-hogfish)]'>Enter Mingle ID#</p>
