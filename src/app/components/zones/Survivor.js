@@ -8,6 +8,7 @@ import { ethers } from "ethers";
 import { gameABI } from "@/app/abis/gameABI";
 import { toBytes } from "viem";
 import prize from "../../../../public/assets/prize.jpg";
+import { TwitterShareButton } from "react-twitter-embed";
 
 export default function Survivor() {
 
@@ -39,21 +40,42 @@ export default function Survivor() {
   const [winner, setWinner] = useState(null)
   let [counter, setCounter] = useState(0)
 
+  const [copied, setCopied] = useState(false)
+
   useEffect(() => {
     GetUser(tokenId)
     increase()
-    if (counter > 0){
+    if (counter > 0) {
       check(tokenId)
     }
-  
+
   }, [counter])
 
   function increase() {
     setTimeout(() => {
       setCounter(counter + 1)
     }, 5000);
-    console.log(counter)
-    
+
+  }
+
+  const getImage = async () => {
+    const imge = document.getElementById("mingle")
+    const data = await fetch(imge.src)
+    const blob = await data.blob()
+
+    try {
+      navigator.clipboard.write([
+        new ClipboardItem({
+          [blob.type]: blob,
+        })
+      ])
+      setCopied(true)
+      console.log("Success")
+
+    } catch (e) {
+      console.error(e)
+    }
+
   }
 
   async function check(nft) {
@@ -108,15 +130,34 @@ export default function Survivor() {
         <Image className="rounded-2xl" src={prize} alt={prize} width={180} height={180} />
       </div>
       <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ESCAPED THE BASEMENT PRISON</p>
-      <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
-      { winner == null ?
-        (<p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">Wait for the Raffle</p>) :
+      {winner == tokenId &&
+        (<p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">You are the Winner!!</p>)
+      }
+      <Image id="mingle" className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+      {winner == null &&
+        (<p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">Wait for the Raffle</p>)
+      }
+      {winner != tokenId &&
         (
           <>
             <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">The winner is!</p>
             <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + winner + ".png"} alt="Mingle" width={60} height={60} />
             <p className="mt-1 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">ID # {winner}</p>
           </>
+        )
+      }
+      {winner != null &&
+        (
+          copied == false ?
+            (
+              <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} onClick={getImage} >Copy to Share on X</button>
+            ) : (
+              <TwitterShareButton
+                url={"I'm the Winner of the Mingles NFT Raid!!"}
+
+              />
+            )
+
         )
       }
     </>
