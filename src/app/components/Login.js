@@ -47,6 +47,7 @@ export default function Login({ connect, getMingles }) {
       {userAddress != null ? (
         <div className="flex items-center justify-center">
           <button className={cls(styles.backColor, "my-8 text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={getMingles} >Enlist Mingle</button>
+          <button className={cls(styles.backColor, "my-8 text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={() => setLocation("noMingle")} >Buy Mingle</button>
         </div>
       ) : (
         <div className="flex items-center justify-center">
