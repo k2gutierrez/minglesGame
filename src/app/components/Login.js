@@ -5,7 +5,7 @@ import cls from "classnames";
 import { React, useContext, useState } from 'react';
 import { WalletContext } from "../context/wallet";
 
-export default function Login({connect, getMingles}) {
+export default function Login({ connect, getMingles }) {
 
   const {
     isConnected,
@@ -37,19 +37,23 @@ export default function Login({connect, getMingles}) {
       <p className="my-5 text-black text-md font-[family-name:var(--font-hogfish)]">DO YOU ACCEPT THE CALL?</p>
       {userAddress != null ? (
         <div className="flex items-center justify-center">
-        <button className={cls(styles.backColor, "my-8 text-base mx-5 w-32 p-1 rounded-xl")} onClick={getMingles} >Enlist Mingle</button>
-      </div>
-      ):(
+          <button className={cls(styles.backColor, "my-8 text-base mx-5 w-32 p-1 rounded-xl")} onClick={getMingles} >Enlist Mingle</button>
+        </div>
+      ) : (
         <div className="flex items-center justify-center">
           <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} onClick={connect} >yes</button>
           <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("no")}>no</button>
-      </div>
+        </div>
       )
 
       }
-      <div className="flex items-center justify-center">
-        <button className={cls(styles.backColor, "my-8 text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("board")} >check the playerboard</button>
-      </div>
+      {isConnected &&
+        (
+          <div className="flex items-center justify-center">
+            <button className={cls(styles.backColor, "my-8 text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("board")} >check the playerboard</button>
+          </div>
+        )
+      }
     </>
   )
 }

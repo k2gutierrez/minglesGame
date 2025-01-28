@@ -51,7 +51,7 @@ export default function Board() {
             console.log(escape)
             setEscape(escape)
             setAlive(ethers.toNumber(raiding) - ethers.toNumber(fallen))
-            const survivors = gameContract.getSurvivors().then((value) => {
+            const survivors = gameContract.getMinglesForRaffle().then((value) => {
                 let ar = []
                 for (let i = 0; i < value.length; i++) {
                     ar.push(value[i])
@@ -72,9 +72,9 @@ export default function Board() {
             </div>
             <div className="text-center mt-5">
                 <p className="text-black font-[family-name:var(--font-pressura)]">Raiding: {raiding}</p>
-                <p className="text-black font-[family-name:var(--font-pressura)]">Alive: {alive}</p>
                 <p className="text-black font-[family-name:var(--font-pressura)]">Fallen: {fallen}</p>
-                <p className="text-black text-lg font-[family-name:var(--font-pressura)]">@ Escape Room: {escape}:</p>
+                <p className="text-black text-lg font-[family-name:var(--font-pressura)]">Made it to the Escape Room: {escape}</p>
+                <p className="text-black font-[family-name:var(--font-pressura)]">Alive: {alive}:</p>
             </div>
             <div className="text-center grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 mt-5">
                 {mingles != null &&
