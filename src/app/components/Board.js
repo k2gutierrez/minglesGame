@@ -51,7 +51,7 @@ export default function Board() {
             console.log(escape)
             setEscape(escape)
             setAlive(ethers.toNumber(raiding) - ethers.toNumber(fallen))
-            const survivors = gameContract.getMinglesForRaffle().then((value) => {
+            const survivors = gameContract.getSurvivors().then((value) => {
                 let ar = []
                 for (let i = 0; i < value.length; i++) {
                     ar.push(value[i])
