@@ -200,6 +200,10 @@ export default function Home() {
         <Die />
       )
       }
+      {location == "board" && (
+        <Board />
+      )
+      }
     </div>
   );
 }
