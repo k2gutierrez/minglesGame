@@ -153,7 +153,7 @@ export default function Survivor() {
               <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} onClick={getImage} >Copy to Share on X</button>
             ) : (
               <TwitterShareButton
-                url={"I'm the Winner of the Mingles NFT Raid!!"}
+                url={winner == tokenId ? "I'm the Winner of the Mingles NFT Raid!!" : "I'm a survivor of the Mingle Raid!!"}
 
               />
             )
