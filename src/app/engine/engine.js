@@ -9,7 +9,7 @@ export async function Sign(_nft, _wormLvl, signer) {
     if (_nft == null) return
     try {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-        const signIn = await gameContract.register(_nft, _wormLvl, toBytes("patio", {size:32}), {
+        const signIn = await gameContract.nextRound(_nft, _wormLvl, toBytes("patio", {size:32}), {
             value: ethers.parseEther("0"),
             gasLimit: 3000000, // or a dynamic estimate
             gasPrice: ethers.parseUnits("10", "gwei")
