@@ -352,7 +352,7 @@ contract NftGame {
         if (users[_nft].status = false) revert NftGame__NftIsDead();
         require(gamePaused == true, "Game must be paused");
 
-        uint256 percentageToDie = 60;
+        uint256 percentageToDie = 70;
         User storage mingle = users[_nft];
         bytes32 deadLocation = 0x6465616400000000000000000000000000000000000000000000000000000000;
         uint256 randomNumer = randomchoices() + 1;

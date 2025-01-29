@@ -86,11 +86,11 @@ export default function PrivateCava() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 30)
+    Choice(tokenId, choice1, 40)
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 40)
+    Choice(tokenId, choice2, 50)
   }
 
   async function GetUser(nft) {
@@ -134,7 +134,7 @@ export default function PrivateCava() {
           {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
           {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
           <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE PRIVATE CAVA" : "YOU'RE STILL IN THE PRIVATE CAVA"}</p>
-          <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+          <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">
             Glimmering bottles line the walls, but whispers make it eerie.
           </p>

@@ -131,7 +131,7 @@ export default function Board() {
                 (
                     <>
                         <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">The winner is!</p>
-                        <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + winner + ".png"} alt="Mingle" width={60} height={60} />
+                        <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + winner + ".png"} alt="Mingle" width={150} height={150} />
                         <p className="mt-1 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">ID # {winner}</p>
                     </>
                 )
@@ -142,7 +142,7 @@ export default function Board() {
 
                         return (
                             <div key={k} className="rounded-lg border border-gray-400 font-[family-name:var(--font-hogfish)]">
-                                <Image src={"https://d9emswcmuvawb.cloudfront.net/PFP" + v + ".png"} alt={v} width={200} height={200} />
+                                <Image className="rounded-lg" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + v + ".png"} alt={v} width={200} height={200} />
                                 <p className="mt-1">Mingle ID {v}</p>
                                 <p className="mt-1">{<span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Alive</span>}</p>
                             </div>

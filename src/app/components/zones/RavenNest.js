@@ -86,19 +86,19 @@ export default function RavenNest() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, onlyChoice, 20)
+    Choice(tokenId, onlyChoice, 40)
   }
 
   const c2 = async () => {
-    Choice(tokenId, onlyChoice, 80)
+    Choice(tokenId, onlyChoice, 75)
   }
 
   const c3 = async () => {
-    Choice(tokenId, onlyChoice, 20)
+    Choice(tokenId, onlyChoice, 50)
   }
 
   const c4 = async () => {
-    Choice(tokenId, onlyChoice, 35)
+    Choice(tokenId, onlyChoice, 65)
   }
 
   const c5 = async () => {
@@ -146,7 +146,7 @@ export default function RavenNest() {
           {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
           {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
           <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE RAVEN NEST" : "YOU'RE STILL IN THE RAVEN NEST"}</p>
-          <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+          <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">
             You’re in the Giant Raven’s lair—talons scrape, shadows move.
           </p>

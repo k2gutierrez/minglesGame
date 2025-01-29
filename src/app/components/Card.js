@@ -99,7 +99,7 @@ export default function Card({ nft }) {
 
     return (
         <div key={id} className="rounded-xl border border-gray-400 font-[family-name:var(--font-hogfish)]">
-            <Image src={"https://d9emswcmuvawb.cloudfront.net/PFP" + nft + ".png"} alt={id} width={200} height={200} />
+            <Image className='rounded-lg' src={"https://d9emswcmuvawb.cloudfront.net/PFP" + nft + ".png"} alt={id} width={200} height={200} />
             {id == 0 ?
                 (
                     <>

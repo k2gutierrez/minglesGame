@@ -131,9 +131,9 @@ export default function Survivor() {
       </div>
       <p className="mt-2 text-black text-md font-[family-name:var(--font-hogfish)]">YOU'VE ESCAPED THE BASEMENT PRISON</p>
       {winner == tokenId &&
-        (<p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">You are the Winner!!</p>)
+        (<p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">You are the Winner, check your Wallet</p>)
       }
-      <Image id="mingle" className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+      <Image id="mingle" className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={100} height={100} />
       {winner == null &&
         (<p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">Wait for the Raffle</p>)
       }
@@ -141,7 +141,7 @@ export default function Survivor() {
         (
           <>
             <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">The winner is!</p>
-            <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + winner + ".png"} alt="Mingle" width={60} height={60} />
+            <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + winner + ".png"} alt="Mingle" width={100} height={100} />
             <p className="mt-1 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">ID # {winner}</p>
           </>
         )
@@ -150,7 +150,7 @@ export default function Survivor() {
         (
           copied == false ?
             (
-              <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} onClick={getImage} >Copy to Share on X</button>
+              <button className={cls(styles.backColor, "mt-8 text-base mx-5 w-32 p-1 rounded-xl")} onClick={getImage} >Copy to Share on X</button>
             ) : (
               <TwitterShareButton
                 url={winner == tokenId ? "I'm the Winner of the Mingles NFT Raid!!" : "I'm a survivor of the Mingle Raid!!"}

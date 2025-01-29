@@ -86,11 +86,11 @@ export default function Hall2() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 30)
+    Choice(tokenId, choice1, 40)
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 35)
+    Choice(tokenId, choice2, 45)
   }
 
   async function GetUser(nft) {
@@ -134,7 +134,7 @@ export default function Hall2() {
           {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
           {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
           <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED HALL 2" : "YOU'RE STILL IN HALL 2"}</p>
-          <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+          <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">
             The silence here is heavy, and every step feels like a risk.
           </p>

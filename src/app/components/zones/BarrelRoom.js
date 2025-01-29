@@ -88,11 +88,11 @@ export default function BarrelRoom() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 30)
+    Choice(tokenId, choice1, 40)
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 35)
+    Choice(tokenId, choice2, 45)
   }
 
   async function GetUser(nft) {
@@ -137,7 +137,7 @@ export default function BarrelRoom() {
             {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
             {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
             <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE BARREL ROOM" : "YOU'RE STILL IN THE BARREL ROOM"}</p>
-            <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+            <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
             <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">A maze of barrels—rich tequila scents and lurking threats.</p>
             <div className="mt-5 mb-10 flex items-center justify-center">
               <button className={cls(styles.backColor, "text-sm p-2 mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={c1} >A. The scent of oak leads you toward a shadowy passage.</button>

@@ -144,7 +144,7 @@ export default function BasementPrison() {
           {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
           {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
           <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE BASEMENT PRISON" : "YOU'RE STILL IN THE BASEMENT PRISON"}</p>
-          <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+          <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">You have found all the mingles, free them and escape.</p>
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]"><span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>WAIT</span> while other heroes get here before you attempt to escape.</p>
           <div className="mt-5 mb-10 flex items-center justify-center">
