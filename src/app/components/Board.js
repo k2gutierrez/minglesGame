@@ -32,10 +32,12 @@ export default function Board() {
     const [fallen, setFallen] = useState(null)
     const [escape, setEscape] = useState(null)
     const [mingles, setMingles] = useState(null)
+    let [counter, setCounter] = useState(0)
 
     useEffect(() => {
+        
         check()
-        console.log(mingles)
+
     }, [])
 
     async function check() {
@@ -53,16 +55,36 @@ export default function Board() {
             setAlive(ethers.toNumber(raiding) - ethers.toNumber(fallen))
             const survivors = gameContract.getSurvivors().then((value) => {
                 let ar = []
+                let ar2 = []
                 for (let i = 0; i < value.length; i++) {
-                    ar.push(value[i])
+                    let v = GetUser(value[i])
+                    v.then((v) => {
+                        if (v != 0){
+                            ar.push(v)
+                            setMingles(ar)
+                        }
+                    })
                 }
-                console.log(ar)
-                setMingles(ar)
-            })
+                
+                
+                })
+                
 
         } catch (e) {
             console.error(e)
         }
+    }
+
+    async function GetUser(nft) {
+        if (nft == null) return
+        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+        const getUser = await gameContract.getUser(nft)
+        let mStatus = getUser[1]
+        if (mStatus == true){
+            return nft
+        }
+        return 0
+        
     }
 
     return (
@@ -81,10 +103,12 @@ export default function Board() {
                     (
 
                         mingles.map((v, k) => {
+
                             return (
                                 <div key={k} className="rounded-lg border border-gray-400 font-[family-name:var(--font-hogfish)]">
                                     <Image src={"https://d9emswcmuvawb.cloudfront.net/PFP" + v + ".png"} alt={v} width={200} height={200} />
                                     <p className="mt-1">Mingle ID {v}</p>
+                                    <p className="mt-1">{<span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Alive</span>}</p>
                                 </div>
                             )
                         })
