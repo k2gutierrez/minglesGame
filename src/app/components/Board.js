@@ -33,19 +33,21 @@ export default function Board() {
     const [escape, setEscape] = useState(null)
     const [mingles, setMingles] = useState(null)
     let [aliveMingles, setAliveMingles] = useState(null)
-    let [counter, setCounter] = useState(0)
+
+    const [winner, setWinner] = useState(null)
 
     useEffect(() => {
 
         setTimeout(() => {
             check()
+            checkWinner()
         }, 1000);
 
     }, [])
 
     useEffect(() => {
 
-        if (mingles != null){
+        if (mingles != null) {
             GetUser(mingles)
         }
 
@@ -92,6 +94,28 @@ export default function Board() {
 
     }
 
+    async function checkWinner() {
+        try {
+            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+            const checkWinner = await gameContract.on(gameContract.filters.WinnerSelected, (winner, event) => {
+                setWinner(winner)
+                //console.log(event)
+            })
+            const checkWinnerAgain = await gameContract.queryFilter(
+                gameContract.filters.WinnerSelected,
+                0,
+                'latest'
+            )
+            checkWinnerAgain.forEach(event => {
+                setWinner(event.args[0])
+                console.log(event.args[0])
+            })
+
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     return (
         <>
             <div className="text-center bg-black rounded-xl p-3 mt-10">
@@ -103,6 +127,15 @@ export default function Board() {
                 <p className="text-black text-lg font-[family-name:var(--font-pressura)]">Made it to the Escape Room: {escape}</p>
                 <p className="text-black font-[family-name:var(--font-pressura)]">Alive: {alive}:</p>
             </div>
+            {winner != null &&
+                (
+                    <>
+                        <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">The winner is!</p>
+                        <Image className="mt-3" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + winner + ".png"} alt="Mingle" width={60} height={60} />
+                        <p className="mt-1 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">ID # {winner}</p>
+                    </>
+                )
+            }
             <div className="text-center grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 mt-5">
                 {aliveMingles != null && (
                     aliveMingles.map((v, k) => {
