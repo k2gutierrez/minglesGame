@@ -31,12 +31,14 @@ export default function Board() {
     const [alive, setAlive] = useState(null)
     const [fallen, setFallen] = useState(null)
     const [escape, setEscape] = useState(null)
-    const [mingles, setMingles] = useState(null)
+    const [mingles, setMingles] = useState([])
     let [counter, setCounter] = useState(0)
 
     useEffect(() => {
         
-        check()
+        setTimeout(() => {
+            check()
+        }, 1500);
 
     }, [])
 
@@ -55,16 +57,18 @@ export default function Board() {
             setAlive(ethers.toNumber(raiding) - ethers.toNumber(fallen))
             const survivors = gameContract.getSurvivors().then((value) => {
                 let ar = []
-                let ar2 = []
                 for (let i = 0; i < value.length; i++) {
                     let v = GetUser(value[i])
                     v.then((v) => {
                         if (v != 0){
                             ar.push(v)
-                            setMingles(ar)
+                            
                         }
+                        setMingles(ar)
                     })
+                    
                 }
+                
                 
                 
                 })
@@ -99,9 +103,7 @@ export default function Board() {
                 <p className="text-black font-[family-name:var(--font-pressura)]">Alive: {alive}:</p>
             </div>
             <div className="text-center grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 mt-5">
-                {mingles != null &&
-                    (
-
+                {
                         mingles.map((v, k) => {
 
                             return (
@@ -114,7 +116,7 @@ export default function Board() {
                         })
 
 
-                    )
+                    
                 }
             </div>
         </>
