@@ -137,7 +137,7 @@ export default function Survivor() {
       {winner == null &&
         (<p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">Wait for the Raffle</p>)
       }
-      {winner != tokenId &&
+      {winner != tokenId && winner != null &&
         (
           <>
             <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">The winner is!</p>
