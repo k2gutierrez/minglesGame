@@ -108,7 +108,7 @@ export default function Home() {
     //api-apechain
     const options = {
       method: 'GET',
-      url: `https://api-apechain.reservoir.tools/users/${userAddress}/tokens/v10?contract=0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E&sortDirection=asc`,
+      url: `https://api-apechain.reservoir.tools/users/${userAddress}/tokens/v10?contract=0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E&sortDirection=asc&limit=200`,
       headers: { accept: '*/*', 'x-api-key': process.env.NEXT_PUBLIC_RESERVOIR }
     };
 
