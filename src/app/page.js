@@ -108,7 +108,7 @@ export default function Home() {
     //api-apechain
     const options = {
       method: 'GET',
-      url: `https://api-sepolia.reservoir.tools/users/${userAddress}/tokens/v10?contract=0xD11a3C3f781aFf4665381Deb70be76b55862D794`,
+      url: `https://api-apechain.reservoir.tools/users/${userAddress}/tokens/v10?contract=0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E&sortDirection=asc`,
       headers: { accept: '*/*', 'x-api-key': process.env.NEXT_PUBLIC_RESERVOIR }
     };
 
