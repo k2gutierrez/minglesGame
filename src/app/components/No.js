@@ -19,7 +19,7 @@ export default function No() {
           <Image className="rounded-2xl" src={cat} alt={cat} width={180} height={180} />
         </div>
         <div className={cls(styles.backColor, "z-0 grid justify-items-center text-center rounded-2xl h-48 w-48 m-5")}>
-          <p className="pt-10 mt-10 text-black text-xs font-[family-name:var(--font-hogfish)]">Stop being a pussy</p>
+          <p className="pt-10 mt-20 text-black text-xs font-[family-name:var(--font-hogfish)]">Stop being a pussy</p>
         </div>
       </div>
       <p className="my-5 text-black text-md font-[family-name:var(--font-hogfish)]">READY?</p>
