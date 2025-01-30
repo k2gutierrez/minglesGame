@@ -88,15 +88,15 @@ export default function Home() {
 
       setIsConnected(true);
 
-      {/*if (chainID.toString() !== apeChainId) {
+      if (chainID.toString() !== apeChainId) {
         alert("Please switch your metamask to apechain network")
         return
-      }*/}
+      }
 
-      if (chainID.toString() !== sepoliaNetworkId) {
+      {/*if (chainID.toString() !== sepoliaNetworkId) {
         alert("Please switch your wallet to sepolia network")
         return
-      }
+      }*/}
 
     } catch (error) {
       console.error("connection error: ", error);
