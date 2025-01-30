@@ -76,7 +76,7 @@ export default function Hall1() {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
       const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), _num, {
         gasLimit: 300000, // or a dynamic estimate
-        gasPrice: ethers.parseUnits("10", "gwei")
+        //gasPrice: ethers.parseUnits("10", "gwei")
       })
       const res = await choiceToSurvive.wait()
       increase()

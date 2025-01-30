@@ -12,7 +12,7 @@ export async function Sign(_nft, _wormLvl, signer) {
         const signIn = await gameContract.register(_nft, _wormLvl, toBytes("patio", {size:32}), {
             value: ethers.parseEther("0"),
             gasLimit: 3000000, // or a dynamic estimate
-            gasPrice: ethers.parseUnits("10", "gwei")
+            //gasPrice: ethers.parseUnits("10", "gwei")
         })
         return signIn
     } catch (e) {
@@ -26,7 +26,7 @@ export async function Choice(_nft, _location, _num, signer) {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
         const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, {size:32}), _num, {
                 gasLimit: 3000000, // or a dynamic estimate
-                gasPrice: ethers.parseUnits("10", "gwei")
+                //gasPrice: ethers.parseUnits("10", "gwei")
             })
         return choiceToSurvive
     } catch (e) {

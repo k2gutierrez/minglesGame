@@ -77,7 +77,7 @@ export default function BasementPrison() {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
       const choiceToSurvive = await gameContract.escapeChoice(_nft, toBytes(_location, { size: 32 }), {
         gasLimit: 3000000, // or a dynamic estimate
-        gasPrice: ethers.parseUnits("10", "gwei")
+        //gasPrice: ethers.parseUnits("10", "gwei")
       })
       const res = await choiceToSurvive.wait()
       increase()
