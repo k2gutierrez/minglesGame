@@ -1,5 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+///////////////////////////////
+/////game coded by Carlos Gutiérrez
+///// X - CarlosDappsDev.eth
+//// github - k2gutierrez
+//0xc6D11bF969C4E34e923ec476FE76f7D7ad0Ce685
+pragma solidity ^0.8.20;
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
