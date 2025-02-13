@@ -100,7 +100,7 @@ export default function Card({ nft }) {
     return (
         <div key={id} className="rounded-xl border border-gray-400 font-[family-name:var(--font-hogfish)]">
             <Image className='rounded-lg' src={"https://d9emswcmuvawb.cloudfront.net/PFP" + nft + ".png"} alt={id} width={200} height={200} />
-            {id == 0 || loc == "" ?
+            {id == 0 ?
                 (
                     <>
                         <p className="pt-1"># {nft + " "}
@@ -119,11 +119,11 @@ export default function Card({ nft }) {
                 ) : (
                     <>
                         <p className="pt-1"># {nft + " "}
-                            <span className={mstatus ? "text-green-500" : "text-red-500"}  >
-                                {mstatus ? "Alive" : "Dead"}
+                            <span className={mstatus == true ? "text-green-500" : "text-red-500"}  >
+                                {mstatus == true ? "Alive" : "Dead"}
                             </span>
                         </p>
-                        {mstatus && (
+                        {mstatus == true && (
                             <button type="button" onClick={registerInContext} className="border border-1 border-black px-1 pt-2 rounded-xl mb-1 bg-slate-300">
                                 {"Continue"}
                             </button>
