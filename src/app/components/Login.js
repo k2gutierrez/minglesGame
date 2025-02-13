@@ -91,9 +91,9 @@ export default function Login({ connect, getMingles }) {
         </div>
       </div>
       <p className="px-5 mb-2 text-black text-sm font-[family-name:var(--font-pressura)]">
-            Max. 200 Mingles per account
+        Max. 200 Mingles per account
       </p>
-      
+
       {alive == 0 && isPaused ?
         (
           <div className="grid text-center mt-1">
@@ -115,11 +115,11 @@ export default function Login({ connect, getMingles }) {
             </div>
           ) : (
             <>
-            <p className="my-5 text-black text-md font-[family-name:var(--font-hogfish)]">DO YOU ACCEPT THE CALL?</p>
-            <div className="flex items-center justify-center">
-              <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={connect} >Yes</button>
-              <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={() => setLocation("no")}>No</button>
-            </div>
+              <p className="my-5 text-black text-md font-[family-name:var(--font-hogfish)]">DO YOU ACCEPT THE CALL?</p>
+              <div className="flex items-center justify-center">
+                <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={connect} >Connect Wallet</button>
+                <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl shadow-lg shadow-green-600/20 transition-all hover:shadow-lg hover:shadow-green-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none")} onClick={() => setLocation("no")}>No</button>
+              </div>
             </>
           )
 

@@ -38,6 +38,7 @@ import FermentationRoom from "./components/zones/FermentationRoom";
 import PrivateCava from "./components/zones/PrivateCava";
 import BasementPrison from "./components/zones/BasementPrison";
 import Survivor from "./components/zones/Survivor";
+import MingleCheck from "./components/MingleCheck";
 
 export default function Home() {
 
@@ -129,7 +130,10 @@ export default function Home() {
         <button className="p-1" onClick={() => setLocation("")}><Image src={logo} alt="Mingles Logo" width={60} height={60} /></button>
       </div>
       {location == "" && (
-        <Login connect={connectWallet} getMingles={getMingles} />
+        <>
+          <Login connect={connectWallet} getMingles={getMingles} />
+          <MingleCheck />
+        </>
       )
       }
       {location == "mingles" && (
