@@ -132,6 +132,10 @@ export default function Home() {
       {location == "" && (
         <>
           <Login connect={connectWallet} getMingles={getMingles} />
+          {isConnected && (
+            <MingleCheck />
+          )
+          }
 
         </>
       )

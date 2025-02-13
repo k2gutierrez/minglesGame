@@ -80,15 +80,15 @@ export default function MingleCheck() {
         </button>
       </div>
       {mstatus && (
-        <p className='mt-5 font-[family-name:var(--font-pressura)]'>Mingle is <span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Registered</span></p>
+        <p className='my-8 font-[family-name:var(--font-pressura)]'>Mingle is <span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Registered</span></p>
       )
       }
       {id == 0 && (
-        <p className='mt-5 font-[family-name:var(--font-pressura)]'>Mingle is <span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Not Registered</span></p>
+        <p className='my-8 font-[family-name:var(--font-pressura)]'>Mingle is <span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Not Registered</span></p>
       )
       }
       {id != 0 && mstatus == false ? (
-        <p className='mt-5 font-[family-name:var(--font-pressura)]'>Mingle is <span className='text-red-600 font-[family-name:var(--font-hogfish)]'>Dead</span></p>
+        <p className='my-8 font-[family-name:var(--font-pressura)]'>Mingle is <span className='text-red-600 font-[family-name:var(--font-hogfish)]'>Dead</span></p>
       ) : (
         <></>
       )
