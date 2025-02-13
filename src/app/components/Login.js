@@ -90,6 +90,9 @@ export default function Login({ connect, getMingles }) {
           </p>
         </div>
       </div>
+      <p className="px-5 mb-2 text-black text-sm font-[family-name:var(--font-pressura)]">
+            Max. 200 Mingles per account
+      </p>
       
       {alive == 0 && isPaused ?
         (
