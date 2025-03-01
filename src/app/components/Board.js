@@ -98,7 +98,7 @@ export default function Board() {
         try {
             const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
             const checkWinner = await gameContract.on(gameContract.filters.WinnerSelected, (winner, event) => {
-                setWinner(winner)
+                setWinner(event)
                 //console.log(event)
             })
             const checkWinnerAgain = await gameContract.queryFilter(
