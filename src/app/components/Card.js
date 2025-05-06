@@ -23,7 +23,9 @@ export default function Card({ nft }) {
         location,
         setLocation,
         tokenId,
-        setTokenId
+        setTokenId,
+        collection,
+        setCollection
     } = useContext(WalletContext);
 
     const [loc, setLoc] = useState("")
@@ -37,7 +39,7 @@ export default function Card({ nft }) {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        GetUser(nft)
+        GetUser(nft.token, nft.collection)
         
         if (trigger == true){
             triggerRegister
@@ -45,23 +47,23 @@ export default function Card({ nft }) {
     }, [nft, trigger])
 
     const registerInContext = async () => {
-        setTokenId(nft)
+        setTokenId(nft.token)
         setTimeout(() => {
             setLocation(loc)
         }, 1000);
     }
 
     const triggerRegister = async () => {
-        setTokenId(nft)
-        await GetUser(nft)
+        setTokenId(nft.token)
+        await GetUser(nft.token, nft.collection)
         setLocation(loc)
     }
 
-    async function GetUser(nft) {
+    async function GetUser(nft, collection) {
         if (nft == null) return
         try {
             const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
-            const getUser = await gameContract.getUser(nft)
+            const getUser = await gameContract.getUser(nft, collection)
             let loc = ethers.decodeBytes32String(getUser[2])
             setLoc(loc)
             let id = ethers.toNumber(getUser[0])
@@ -74,6 +76,8 @@ export default function Card({ nft }) {
             setCstage(Cstage)
             let Crevive = getUser[5]
             setCrevive(Crevive)
+            let  col = getUser[6]
+            setCollection(col);
 
         } catch (e) {
             console.error(e)
@@ -82,11 +86,11 @@ export default function Card({ nft }) {
 
     const getMingleData = async () => {
         setLoading(true)
-        let type = await GetMingleMetadata(nft, provider)
-        let surviveChance = await mingleType(type)
+        let type = await GetMingleMetadata(nft.token, provider)
+        //let surviveChance = await mingleType(type)
         try {
-            let sign = await Sign(nft, surviveChance, signer)
-            setTokenId(nft)
+            let sign = await Sign(nft.token, nft.collection, signer)
+            setTokenId(nft.token)
             let w = await sign.wait()
             setLocation("patio")
             
@@ -99,7 +103,20 @@ export default function Card({ nft }) {
 
     return (
         <div key={id} className="rounded-xl border border-gray-400 font-[family-name:var(--font-hogfish)]">
-            <Image className='rounded-lg' src={"https://d9emswcmuvawb.cloudfront.net/PFP" + nft + ".png"} alt={id} width={200} height={200} />
+            {nft.collection == "collection1" && (
+                <>
+                    <Image className='rounded-lg' src={"https://d9emswcmuvawb.cloudfront.net/PFP" + nft.token + ".png"} alt={id} width={200} height={200} />
+                </>
+            )
+            }
+            {nft.collection == "collection2" && 
+                (
+                    <>
+                        <Image className='rounded-lg' src={"https://bafybeifrjmhpuf34cv6sy4lqhs5gmmusznpunyfik3rqoqfi73abpcpnbi.ipfs.dweb.link/" + nft.token + ".jpg"} alt={id} width={200} height={200} />
+                    </>
+                )
+            }
+            
             {id == 0 ?
                 (
                     <>

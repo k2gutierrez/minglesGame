@@ -13,7 +13,7 @@ import Card from "./Card";
 import { gameABI } from "../abis/gameABI";
 import { ethers } from "ethers";
 
-export default function SelectMingle({ mingle }) {
+export default function SelectMingle({ mingle, gsOnApe }) {
 
     const {
         isConnected,
@@ -59,10 +59,10 @@ export default function SelectMingle({ mingle }) {
             const raiding = await gameContract.getAmountOfRegisteredUsers()
             console.log(raiding)
             setRaiding(raiding)
-            const fallen = await gameContract.getCaidos()
+            const fallen = await gameContract.getDeadNftsLength()
             console.log(fallen)
             setFallen(fallen)
-            const escape = await gameContract.getSurvivorsLength()
+            const escape = await gameContract.getMinglesForRaffleLength()
             console.log(escape)
             setEscape(escape)
             setAlive(ethers.toNumber(raiding) - ethers.toNumber(fallen))
@@ -89,13 +89,16 @@ export default function SelectMingle({ mingle }) {
             ) : (
                 <>
                     <div className="text-center bg-black rounded-xl p-2 mt-10">
-                        <p className="text-white font-[family-name:var(--font-pressura)]">Pick your Mingle</p>
+                        <p className="text-white font-[family-name:var(--font-pressura)]">Pick your Player</p>
                     </div>
                     <div className="text-center grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 mt-5 mb-8">
-                        {mingle && (
-                            mingle.tokens.map((v, k) => {
-
-                                const mingleInfo = v.token.tokenId
+                        {mingle.tokens && (
+                            mingle.tokens.tokens.map((v, k) => {
+                                let col = mingle.collection;
+                                const mingleInfo = {
+                                    token: v.token.tokenId,
+                                    collection: col
+                                }
 
                                 return (
                                     <Card key={k} nft={mingleInfo} />
@@ -105,6 +108,25 @@ export default function SelectMingle({ mingle }) {
                         )
                         }
                     </div>
+                    <div className="text-center grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 mt-5 mb-8">
+                        {gsOnApe && (
+                            
+                            gsOnApe.tokens.tokens.map((v, k) => {
+                                let col = gsOnApe.collection;
+                                const apeInfo = {
+                                    token: v.token.tokenId,
+                                    collection: col
+                                }
+
+                                return (
+                                    <Card key={k} nft={apeInfo} />
+                                )
+                            }
+                            )
+                        )
+                        }
+                    </div>
+                    
                 </>
             )
             }

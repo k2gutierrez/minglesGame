@@ -65,6 +65,7 @@ export default function Home() {
   } = useContext(WalletContext);
 
   let [mingle, setMingle] = useState(null);
+  let [gsApe, setGsApe] = useState(null);
   let [chain, setChain] = useState(0)
 
   const connectWallet = async () => {
@@ -117,10 +118,33 @@ export default function Home() {
       .request(options)
       .then(res => {
         let data1 = res.data
-        setMingle(data1)
+        setMingle({tokens: data1, collection: "collection1"})
         setLocation("mingles")
       })
       .catch(err => console.error(err));
+  }
+
+  async function getGsApe() {
+    //api-apechain
+    const options = {
+      method: 'GET',
+      url: `https://api-apechain.reservoir.tools/users/${userAddress}/tokens/v10?contract=0xb3443b6bd585ba4118cae2bedb61c7ec4a8281df&sortDirection=asc&limit=200`,
+      headers: { accept: '*/*', 'x-api-key': process.env.NEXT_PUBLIC_RESERVOIR }
+    };
+
+    axios
+      .request(options)
+      .then(res => {
+        let data1 = res.data
+        setGsApe({tokens: data1, collection: "collection2"})
+        setLocation("mingles")
+      })
+      .catch(err => console.error(err));
+  }
+
+  async function getCollections() {
+    getMingles();
+    getGsApe();
   }
 
   return (
@@ -131,7 +155,7 @@ export default function Home() {
       </div>
       {location == "" && (
         <>
-          <Login connect={connectWallet} getMingles={getMingles} />
+          <Login connect={connectWallet} getMingles={getCollections} />
           {isConnected && (
             <MingleCheck />
           )
@@ -141,7 +165,7 @@ export default function Home() {
       )
       }
       {location == "mingles" && (
-        <SelectMingle mingle={mingle} />
+        <SelectMingle mingle={mingle} gsOnApe={gsApe} />
       )
       }
       {location == "no" && (

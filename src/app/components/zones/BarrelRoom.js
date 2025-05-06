@@ -25,7 +25,9 @@ export default function BarrelRoom() {
     tokenId,
     setTokenId,
     isAlive,
-    setIsAlive
+    setIsAlive,
+    collection,
+    setCollection
   } = useContext(WalletContext);
 
   const [loc, setLoc] = useState("")
@@ -70,30 +72,30 @@ export default function BarrelRoom() {
     setCounter(counter + 1)
   }
 
-  async function Choice(_nft, _location, _num) {
-    if (tokenId == null) return
-    setLoading(true)
-    try {
-      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-      const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), _num, {
-        gasLimit: 3000000, // or a dynamic estimate
-        //gasPrice: ethers.parseUnits("10", "gwei")
-      })
-      const res = await choiceToSurvive.wait()
-      increase()
-
-    } catch (e) {
-      console.error(e)
+  async function Choice(_nft, _location, _collection, _num) {
+      if (tokenId == null) return
+      setLoading(true)
+      try {
+        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
+        const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), toBytes(_collection, { size: 32 }), _num, {
+          gasLimit: 3000000, // or a dynamic estimate
+          //gasPrice: ethers.parseUnits("10", "gwei")
+        })
+        const res = await choiceToSurvive.wait()
+        increase()
+  
+      } catch (e) {
+        console.error(e)
+      }
     }
-  }
 
-  const c1 = async () => {
-    Choice(tokenId, choice1, 60)
-  }
-
-  const c2 = async () => {
-    Choice(tokenId, choice2, 65)
-  }
+    const c1 = async () => {
+      Choice(tokenId, choice1, collection, 0)
+    }
+  
+    const c2 = async () => {
+      Choice(tokenId, choice2, collection, 1)
+    }
 
   async function GetUser(nft) {
     if (nft == null) return

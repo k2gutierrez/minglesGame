@@ -5,11 +5,13 @@ import { toBytes } from "viem";
 
 const externalProvider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_NODE)
 
-export async function Sign(_nft, _wormLvl, signer) {
+export async function Sign(_nft, _collection, signer) {
     if (_nft == null) return
+    const resurrection = 15;
+    const startingLcation = "patio"
     try {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-        const signIn = await gameContract.register(_nft, _wormLvl, toBytes("patio", {size:32}), {
+        const signIn = await gameContract.register(_nft, resurrection, toBytes(startingLcation, {size:32}), toBytes(_collection, {size:32}) , {
             value: ethers.parseEther("0"),
             gasLimit: 3000000, // or a dynamic estimate
             //gasPrice: ethers.parseUnits("10", "gwei")
@@ -20,11 +22,11 @@ export async function Sign(_nft, _wormLvl, signer) {
     }
 }
 
-export async function Choice(_nft, _location, _num, signer) {
+export async function Choice(_nft, _location, _collection, _num, signer) {
     if (_nft == null) return
     try {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-        const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, {size:32}), _num, {
+        const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, {size:32}), toBytes(_collection, {size:32}), _num, {
                 gasLimit: 3000000, // or a dynamic estimate
                 //gasPrice: ethers.parseUnits("10", "gwei")
             })
@@ -34,13 +36,13 @@ export async function Choice(_nft, _location, _num, signer) {
     }
 }
 
-export async function EscapeChoice(_nft, _location, signer) {
+export async function EscapeChoice(_nft, _location, _collection, signer) {
     if (_nft == null) return
     try {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-        const choiceToEscape = await gameContract.escapeChoice(_nft, toBytes(_location, {size:32}), {
+        const choiceToEscape = await gameContract.escapeChoice(_nft, toBytes(_location, {size:32}), toBytes(_collection, {size:32}), {
                 gasLimit: 3000000, // or a dynamic estimate
-                gasPrice: ethers.parseUnits("10", "gwei")
+                //gasPrice: ethers.parseUnits("10", "gwei")
             })
         return choiceToEscape
     } catch (e) {
@@ -48,11 +50,11 @@ export async function EscapeChoice(_nft, _location, signer) {
     }
 }
 
-export async function GetUser(_nft, provider) {
+export async function GetUser(_nft, _collection, provider) {
     if (_nft == null) return
     try {
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
-        const getUser = await gameContract.getUser(_nft)
+        const getUser = await gameContract.getUser(_nft, toBytes(_collection, {size:32}))
         let loc = ethers.decodeBytes32String(getUser[2])
         let id = ethers.toNumber(getUser[0]).toString()
         let mStatus = getUser[1]
@@ -65,7 +67,8 @@ export async function GetUser(_nft, provider) {
             location: loc,
             wormLvl: lvl,
             stage: Cstage,
-            revive: Crevive
+            revive: Crevive,
+            collection: getUser[6]
         }
         return info
     } catch (e) {

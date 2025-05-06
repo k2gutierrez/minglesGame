@@ -11,6 +11,7 @@ export const WalletContextProvider = ({children}) => {
     let [provider, setProvider] = useState();
     let [location, setLocation] = useState("");
     let [tokenId, setTokenId] = useState(null);
+    let [collection, setCollection] = useState("");
     let [isAlive, setIsAlive] = useState(true);
     const [contract, setContract] = useState(null);
 
@@ -29,6 +30,8 @@ export const WalletContextProvider = ({children}) => {
                 setLocation,
                 tokenId,
                 setTokenId,
+                collection,
+                setCollection,
                 isAlive,
                 setIsAlive,
                 contract,
