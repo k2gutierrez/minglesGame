@@ -39,7 +39,7 @@ export default function MingleCheck() {
   const GetUser = async () => {
     if (token == null) return
     try {
-      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
       const getUser = await gameContract.getUser(token)
 
       let loc = ethers.decodeBytes32String(getUser[2])

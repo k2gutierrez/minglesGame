@@ -48,6 +48,7 @@ export default function Card({ nft }) {
 
     const registerInContext = async () => {
         setTokenId(nft.token)
+        setCollection(nft.collection)
         setTimeout(() => {
             setLocation(loc)
         }, 1000);
@@ -55,6 +56,7 @@ export default function Card({ nft }) {
 
     const triggerRegister = async () => {
         setTokenId(nft.token)
+        setCollection(nft.collection)
         await GetUser(nft.token, nft.collection)
         setLocation(loc)
     }
@@ -62,7 +64,7 @@ export default function Card({ nft }) {
     async function GetUser(nft, collection) {
         if (nft == null) return
         try {
-            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
             const getUser = await gameContract.getUser(nft, collection)
             let loc = ethers.decodeBytes32String(getUser[2])
             setLoc(loc)
@@ -91,6 +93,7 @@ export default function Card({ nft }) {
         try {
             let sign = await Sign(nft.token, nft.collection, signer)
             setTokenId(nft.token)
+            setCollection(nft.collection)
             let w = await sign.wait()
             setLocation("patio")
             

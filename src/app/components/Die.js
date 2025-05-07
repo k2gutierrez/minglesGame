@@ -6,6 +6,7 @@ import { React, useContext, useState } from 'react';
 import { WalletContext } from "@/app/context/wallet";
 import { TwitterShareButton } from "react-twitter-embed";
 
+//BASE
 export default function Die() {
 
   const {
@@ -22,7 +23,9 @@ export default function Die() {
     tokenId,
     setTokenId,
     isAlive,
-    setIsAlive
+    setIsAlive,
+    collection,
+    setCollection
   } = useContext(WalletContext);
 
   const [copied, setCopied] = useState(false)
@@ -56,7 +59,12 @@ export default function Die() {
         </video>
       </div>
       <p className="mt-5 text-black text-md font-[family-name:var(--font-hogfish)]">YOU DIED</p>
-      <Image id="mingle" className="mt-4" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+      {collection == "collection1" && (
+        <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+      )}
+      {collection == "collection2" && (
+        <Image className="mt-3 rounded-2xl" src={"https://bafybeifrjmhpuf34cv6sy4lqhs5gmmusznpunyfik3rqoqfi73abpcpnbi.ipfs.w3s.link/" + tokenId + ".jpg"} alt="Mingle" width={60} height={60} />
+      )}
       <p className="my-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">Want to try again?</p>
       <div className="flex items-center justify-center">
         <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} onClick={() => setLocation("mingles")} >yes</button>
@@ -65,9 +73,9 @@ export default function Die() {
             <button className={cls(styles.backColor, "text-base mx-5 w-32 p-1 rounded-xl")} onClick={getImage} >Copy to Share on X</button>
           ) : (
             <TwitterShareButton
-                  url="I tried the Mingle Raid!"
+              url="I tried the Mingle Raid!"
 
-                />
+            />
           )
         }
       </div>

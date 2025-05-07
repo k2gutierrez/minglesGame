@@ -24,7 +24,9 @@ export default function Board() {
         tokenId,
         setTokenId,
         isAlive,
-        setIsAlive
+        setIsAlive,
+        collection,
+        setCollection
     } = useContext(WalletContext);
 
     const [raiding, setRaiding] = useState(null)
@@ -35,6 +37,8 @@ export default function Board() {
     let [aliveMingles, setAliveMingles] = useState(null)
 
     const [winner, setWinner] = useState(null)
+
+    const [winnerCollection, setWinnerCollection] = useState("")
 
     useEffect(() => {
 
@@ -55,7 +59,7 @@ export default function Board() {
 
     async function check() {
         try {
-            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
             const raiding = await gameContract.getAmountOfRegisteredUsers()
             console.log(raiding)
             setRaiding(raiding)
@@ -82,7 +86,7 @@ export default function Board() {
 
     async function GetUser(mingles) {
         let arr = []
-        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+        const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
         for (let i = 0; i < mingles.length; i++) {
             const getUser = await gameContract.getUser(mingles[i])
             let mStatus = getUser[1]
@@ -96,7 +100,7 @@ export default function Board() {
 
     async function checkWinner() {
         try {
-            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
             const checkWinner = await gameContract.on(gameContract.filters.WinnerSelected, (winner, event) => {
                 setWinner(event)
                 //console.log(event)

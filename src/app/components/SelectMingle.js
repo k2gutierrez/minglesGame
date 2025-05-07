@@ -43,7 +43,7 @@ export default function SelectMingle({ mingle, gsOnApe }) {
 
     async function GetPausedStatus() {
         try {
-            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
             const getPausedStatus = await gameContract.getGamePausedStatus()
             setIsPaused(getPausedStatus)
             console.log("function: ", getPausedStatus)
@@ -55,7 +55,7 @@ export default function SelectMingle({ mingle, gsOnApe }) {
 
     async function check() {
         try {
-            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+            const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
             const raiding = await gameContract.getAmountOfRegisteredUsers()
             console.log(raiding)
             setRaiding(raiding)

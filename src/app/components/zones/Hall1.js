@@ -9,6 +9,7 @@ import { gameABI } from "@/app/abis/gameABI";
 import { toBytes } from "viem";
 import Loader from "../Loader";
 
+//BASE
 export default function Hall1() {
 
   const {
@@ -25,7 +26,9 @@ export default function Hall1() {
     tokenId,
     setTokenId,
     isAlive,
-    setIsAlive
+    setIsAlive,
+    collection,
+    setCollection
   } = useContext(WalletContext);
 
   const [loc, setLoc] = useState("")
@@ -44,18 +47,18 @@ export default function Hall1() {
   const choice2 = "fermentation room"
 
   useEffect(() => {
-    GetUser(tokenId)
+    GetUser(tokenId, collection)
     console.log(counter)
     if (counter > 0) {
       setTimeout(() => {
-        check(tokenId)
+        check(tokenId, collection)
       }, 1000);
     }
 
   }, [counter])
 
-  async function check(nft) {
-    GetUser(nft)
+  async function check(nft, collection) {
+    GetUser(nft, collection)
     setTimeout(() => {
       if (loc == "hall1") {
         setMessage("Mayahuel has given you a second chance to pass this stage!")
@@ -69,12 +72,12 @@ export default function Hall1() {
     setCounter(counter + 1)
   }
 
-  async function Choice(_nft, _location, _num) {
+  async function Choice(_nft, _location, _collection, _num) {
     if (tokenId == null) return
     setLoading(true)
     try {
-      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, signer)
-      const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), _num, {
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, signer)
+      const choiceToSurvive = await gameContract.choice(_nft, toBytes(_location, { size: 32 }), toBytes(_collection, { size: 32 }), _num, {
         gasLimit: 300000, // or a dynamic estimate
         //gasPrice: ethers.parseUnits("10", "gwei")
       })
@@ -87,18 +90,18 @@ export default function Hall1() {
   }
 
   const c1 = async () => {
-    Choice(tokenId, choice1, 65)
+    Choice(tokenId, choice1, collection, 0)
   }
 
   const c2 = async () => {
-    Choice(tokenId, choice2, 60)
+    Choice(tokenId, choice2, collection, 1)
   }
 
-  async function GetUser(nft) {
+  async function GetUser(nft, collection) {
     if (nft == null) return
     try {
-      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
-      const getUser = await gameContract.getUser(nft)
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
+      const getUser = await gameContract.getUser(nft, collection)
       let loc = ethers.decodeBytes32String(getUser[2])
       setLoc(loc)
       let id = ethers.toNumber(getUser[0])
@@ -110,6 +113,7 @@ export default function Hall1() {
       let Cstage = ethers.toNumber(getUser[4])
       setCstage(Cstage)
       let Crevive = getUser[5]
+      setCollection(getUser[6])
       setCrevive(Crevive)
       if (counter > 0) {
         setLocation(loc)
@@ -135,7 +139,12 @@ export default function Hall1() {
           {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
           {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
           <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED HALL 1" : "YOU'RE STILL IN HALL 1"}</p>
-          <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+          {collection == "collection1" && (
+            <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+          )}
+          {collection == "collection2" && (
+            <Image className="mt-3 rounded-2xl" src={"https://bafybeifrjmhpuf34cv6sy4lqhs5gmmusznpunyfik3rqoqfi73abpcpnbi.ipfs.w3s.link/" + tokenId + ".jpg"} alt="Mingle" width={60} height={60} />
+          )}
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">This hall echoes with bubbling sounds and creeping unease.
           </p>
           <div className="mt-5 mb-10 flex items-center justify-center">

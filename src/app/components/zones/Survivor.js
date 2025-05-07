@@ -10,6 +10,7 @@ import { toBytes } from "viem";
 import prize from "../../../../public/assets/prize.jpg";
 import { TwitterShareButton } from "react-twitter-embed";
 
+//BASE
 export default function Survivor() {
 
   const {
@@ -26,7 +27,9 @@ export default function Survivor() {
     tokenId,
     setTokenId,
     isAlive,
-    setIsAlive
+    setIsAlive,
+    collection,
+    setCollection
   } = useContext(WalletContext);
 
   const [loc, setLoc] = useState("")
@@ -37,13 +40,15 @@ export default function Survivor() {
   const [crevive, setCrevive] = useState()
   const [trigger, setTrigger] = useState(false)
 
+  const [winnerCollection, setWinnerCollection] = useState("")
+
   const [winner, setWinner] = useState(null)
   let [counter, setCounter] = useState(0)
 
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-    GetUser(tokenId)
+    GetUser(tokenId, collection)
     increase()
     if (counter > 0) {
       check(tokenId)
@@ -81,10 +86,11 @@ export default function Survivor() {
   async function check(nft) {
     if (nft == null) return
     try {
-      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
       const checkWinner = await gameContract.on(gameContract.filters.WinnerSelected, (winner, event) => {
         setWinner(winner)
-        //console.log(event)
+        setWinnerCollection(winner)
+        console.log(winner)
       })
       const checkWinnerAgain = await gameContract.queryFilter(
         gameContract.filters.WinnerSelected,
@@ -93,6 +99,7 @@ export default function Survivor() {
       )
       checkWinnerAgain.forEach(event => {
         setWinner(event.args[0])
+        setWinnerCollection(event.args[0])
         console.log(event.args[0])
       })
 
@@ -101,11 +108,11 @@ export default function Survivor() {
     }
   }
 
-  async function GetUser(nft) {
+  async function GetUser(nft, collection) {
     if (nft == null) return
     try {
-      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
-      const getUser = await gameContract.getUser(nft)
+      const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
+      const getUser = await gameContract.getUser(nft, collection)
       let loc = ethers.decodeBytes32String(getUser[2])
       setLoc(loc)
       let id = ethers.toNumber(getUser[0])
@@ -118,6 +125,7 @@ export default function Survivor() {
       setCstage(Cstage)
       let Crevive = getUser[5]
       setCrevive(Crevive)
+      setCollection(getUser[6])
 
     } catch (e) {
       console.error(e)
@@ -133,15 +141,29 @@ export default function Survivor() {
       {winner == tokenId &&
         (<p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">You are the Winner, check your Wallet</p>)
       }
-      <Image id="mingle" className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={100} height={100} />
+      {collection == "collection1" && (
+        <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
+      )}
+      {collection == "collection2" && (
+        <Image className="mt-3 rounded-2xl" src={"https://bafybeifrjmhpuf34cv6sy4lqhs5gmmusznpunyfik3rqoqfi73abpcpnbi.ipfs.w3s.link/" + tokenId + ".jpg"} alt="Mingle" width={60} height={60} />
+      )}
       {winner == null &&
         (<p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">Wait for the Raffle</p>)
       }
-      {winner != tokenId && winner != null &&
+      {winner != tokenId && winner != null && winnerCollection == "collection1" &&
         (
           <>
             <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">The winner is!</p>
             <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + winner + ".png"} alt="Mingle" width={100} height={100} />
+            <p className="mt-1 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">ID # {winner}</p>
+          </>
+        )
+      }
+      {winner != tokenId && winner != null && winnerCollection == "collection2" &&
+        (
+          <>
+            <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">The winner is!</p>
+            <Image className="mt-3 rounded-2xl" src={"https://bafybeifrjmhpuf34cv6sy4lqhs5gmmusznpunyfik3rqoqfi73abpcpnbi.ipfs.w3s.link/" + winner + ".jpg"} alt="Mingle" width={100} height={100} />
             <p className="mt-1 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">ID # {winner}</p>
           </>
         )

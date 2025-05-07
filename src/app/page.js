@@ -107,10 +107,12 @@ export default function Home() {
   }
 
   async function getMingles() {
+    const mingles_curtis = `https://api-curtis.reservoir.tools/users/${userAddress}/tokens/v10?contract=0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E&sortDirection=asc&limit=200`
+    const mingles_ape = `https://api-apechain.reservoir.tools/users/${userAddress}/tokens/v10?contract=0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E&sortDirection=asc&limit=200`
     //api-apechain
     const options = {
       method: 'GET',
-      url: `https://api-apechain.reservoir.tools/users/${userAddress}/tokens/v10?contract=0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E&sortDirection=asc&limit=200`,
+      url: mingles_curtis,
       headers: { accept: '*/*', 'x-api-key': process.env.NEXT_PUBLIC_RESERVOIR }
     };
 
@@ -125,10 +127,12 @@ export default function Home() {
   }
 
   async function getGsApe() {
-    //api-apechain
+
+    const gsape_curtis = `https://api-curtis.reservoir.tools/users/${userAddress}/tokens/v10?contract=0x68206E2D0B5c0aD16E2dd05Ce7eC0ea2f571DDFf&sortDirection=asc&limit=200`
+    const gsape_ape = `https://api-apechain.reservoir.tools/users/${userAddress}/tokens/v10?contract=0xb3443b6bd585ba4118cae2bedb61c7ec4a8281df&sortDirection=asc&limit=200`
     const options = {
       method: 'GET',
-      url: `https://api-apechain.reservoir.tools/users/${userAddress}/tokens/v10?contract=0xb3443b6bd585ba4118cae2bedb61c7ec4a8281df&sortDirection=asc&limit=200`,
+      url: gsape_curtis,
       headers: { accept: '*/*', 'x-api-key': process.env.NEXT_PUBLIC_RESERVOIR }
     };
 
