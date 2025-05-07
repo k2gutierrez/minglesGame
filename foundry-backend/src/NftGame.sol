@@ -131,7 +131,7 @@ contract NftGame {
     event GameStarted(uint256 startingTime);
     event GameEnded(uint256 usersInRound, uint256 timeStamp);
     event Survivors(uint256[]);
-    event WinnerSelected(uint256 winner);
+    event WinnerSelected(uint256 winner, bytes32 collection);
     event NFTPrizeSet(address nftAddress, uint256 nftId);
     event NFTsSetForPlay(address nftPlayerAddress_1, address nftPlayerAddress_2);
     event FailedAdventure();
@@ -624,14 +624,16 @@ contract NftGame {
                 address onlyWinner = playerNft1.ownerOf(s_minglesForRaffle[0].nftId);
                 prizeNft.transferFrom(address(this), onlyWinner, s_nftPrizeId);
                 uint256 winner1 = s_minglesForRaffle[0].nftId;
-                emit WinnerSelected(winner1);
+                bytes32 winnerCollection = s_minglesForRaffle[0].collection;
+                emit WinnerSelected(winner1, winnerCollection);
 
                 return winner1;
             } else {
                 address onlyWinner = playerNft2.ownerOf(s_minglesForRaffle[0].nftId);
                 prizeNft.transferFrom(address(this), onlyWinner, s_nftPrizeId);
                 uint256 winner1 = s_minglesForRaffle[0].nftId;
-                emit WinnerSelected(winner1);
+                bytes32 winnerCollection = s_minglesForRaffle[0].collection;
+                emit WinnerSelected(winner1, winnerCollection);
 
                 return winner1;
             }
@@ -644,7 +646,7 @@ contract NftGame {
             address winnerAddress = playerNft1.ownerOf(winner.nftId);
             prizeNft.transferFrom(address(this), winnerAddress, s_nftPrizeId);
 
-            emit WinnerSelected(winner.nftId);
+            emit WinnerSelected(winner.nftId, winner.collection);
 
             
             return winner.nftId;
@@ -652,7 +654,7 @@ contract NftGame {
             address winnerAddress = playerNft2.ownerOf(winner.nftId);
             prizeNft.transferFrom(address(this), winnerAddress, s_nftPrizeId);
 
-            emit WinnerSelected(winner.nftId);
+            emit WinnerSelected(winner.nftId, winner.collection);
 
             
             return winner.nftId;
