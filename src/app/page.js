@@ -74,7 +74,9 @@ export default function Home() {
     }
 
     try {
-      const provider = new BrowserProvider(window.ethereum);
+      const provider = new ethers.providers.JsonRpcProvider(process.env.CURTIS_RPC_URL)
+
+      //const provider = new BrowserProvider(window.ethereum);
       setProvider(provider)
       const accounts = await provider.send("eth_requestAccounts", []);
       setUserAddress(accounts[0]);
