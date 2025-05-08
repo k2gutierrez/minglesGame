@@ -249,10 +249,10 @@ export default function Home() {
         <Rules getMingles={getMingles} />
       )
       }
-      {location == "noMingle" && (
+      {/*location == "noMingle" && (
         <NoMingle />
       )
-      }
+      */}
     </div>
   );
 }
