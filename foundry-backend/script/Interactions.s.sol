@@ -31,7 +31,7 @@ contract startGame is Script {
     }
 
     function startTheGame(address contractAddress) public {
-        (address adr, ) = NftGame(payable(contractAddress)).getPlayingNFTsAddresses();
+        address adr = NftGame(payable(contractAddress)).getPlayingNFTsAddress1();
         vm.startBroadcast();
         NFT(adr).approve(contractAddress, 1);
         NFT(adr).mintTo(msg.sender);

@@ -102,7 +102,7 @@ export default function FermentationRoom() {
     if (nft == null) return
     try {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
-      const getUser = await gameContract.getUser(nft, collection)
+      const getUser = await gameContract.getUser(nft, toBytes(collection, { size: 32 }))
       let loc = ethers.decodeBytes32String(getUser[2])
       setLoc(loc)
       let id = ethers.toNumber(getUser[0])
@@ -114,7 +114,6 @@ export default function FermentationRoom() {
       let Cstage = ethers.toNumber(getUser[4])
       setCstage(Cstage)
       let Crevive = getUser[5]
-      setCollection(getUser[6])
       setCrevive(Crevive)
       if (counter > 0) {
         setLocation(loc)

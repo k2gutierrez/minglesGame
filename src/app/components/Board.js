@@ -7,6 +7,7 @@ import oneOnOne from "../../../public/assets/1of1s.png";
 import { WalletContext } from "../context/wallet";
 import { gameABI } from "../abis/gameABI";
 import { ethers } from "ethers";
+import { toBytes } from "viem";
 
 export default function Board() {
 
@@ -52,7 +53,7 @@ export default function Board() {
     useEffect(() => {
 
         if (mingles != null) {
-            GetUser(mingles)
+            GetUser(mingles, toBytes(collection, { size: 32 }))
         }
 
     }, [mingles])
@@ -63,19 +64,26 @@ export default function Board() {
             const raiding = await gameContract.getAmountOfRegisteredUsers()
             console.log(raiding)
             setRaiding(raiding)
-            const fallen = await gameContract.getCaidos()
+            const fallen = await gameContract.getDeadNftsLength()
             console.log(fallen)
             setFallen(fallen)
-            const escape = await gameContract.getSurvivorsLength()
+            const escape = await gameContract.getMinglesForRaffleLength()
             console.log(escape)
             setEscape(escape)
             setAlive(ethers.toNumber(raiding) - ethers.toNumber(fallen))
-            const survivors = gameContract.getSurvivors().then((value) => {
+            const survivors = gameContract.getRegisteredUsersCollection().then((value) => { // getMinglesForRaffle
                 let ar = []
                 for (let i = 0; i < value.length; i++) {
-                    ar.push(value[i])
+                    let base = {
+                        token: value[i][0],
+                        collection: value[i][6]
+                    }
+                    ar.push(base)
+                    //ar.push(value[i])
 
                 }
+                console.log("whole array", ar)
+                console.log("Result", ar[0][1])
                 setMingles(ar)
             })
 
@@ -84,14 +92,21 @@ export default function Board() {
         }
     }
 
-    async function GetUser(mingles) {
+    
+
+    async function GetUser(mingles, collection) {
         let arr = []
         const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
         for (let i = 0; i < mingles.length; i++) {
-            const getUser = await gameContract.getUser(mingles[i])
+            const getUser = await gameContract.getUser(mingles[i].token, mingles[i].collection)
             let mStatus = getUser[1]
-            if (mStatus == true) {
-                arr.push(getUser[0])
+            if (mStatus != 4) {
+                let base = {
+                    token: getUser[0],
+                    collection: getUser[6]
+                }
+                arr.push(base)
+                //arr.push(getUser[0])
             }
         }
         setAliveMingles(arr)
@@ -145,11 +160,18 @@ export default function Board() {
                     aliveMingles.map((v, k) => {
 
                         return (
+                            
                             <div key={k} className="rounded-lg border border-gray-400 font-[family-name:var(--font-hogfish)]">
-                                <Image className="rounded-lg" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + v + ".png"} alt={v} width={200} height={200} />
-                                <p className="mt-1">Mingle ID {v}</p>
+                                {v.collection == "0x636f6c6c656374696f6e31000000000000000000000000000000000000000000" && (
+                                    <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + v.token + ".png"} alt="Mingle" width={200} height={200} />
+                                )}
+                                {v.collection == "0x636f6c6c656374696f6e32000000000000000000000000000000000000000000" && (
+                                    <Image className="mt-3 rounded-2xl" src={"https://bafybeifrjmhpuf34cv6sy4lqhs5gmmusznpunyfik3rqoqfi73abpcpnbi.ipfs.w3s.link/" + v.token + ".jpg"} alt="Mingle" width={200} height={200} />
+                                )}
+                                <p className="mt-1">Mingle ID {v.token}</p>
                                 <p className="mt-1">{<span className='text-blue-600 font-[family-name:var(--font-hogfish)]'>Alive</span>}</p>
                             </div>
+
                         )
                     })
 

@@ -8,8 +8,9 @@ import { mingleType } from '../engine/engine';
 import { Sign } from '../engine/engine';
 import Image from 'next/image';
 import Loader from './Loader';
+import { toBytes } from 'viem';
 
-export default function Card({ nft }) {
+export default function Card({ nft, Nftcollection }) {
 
     const {
         isConnected,
@@ -39,7 +40,7 @@ export default function Card({ nft }) {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        GetUser(nft.token, nft.collection)
+        GetUser(nft, Nftcollection)
         
         if (trigger == true){
             triggerRegister
@@ -47,17 +48,22 @@ export default function Card({ nft }) {
     }, [nft, trigger])
 
     const registerInContext = async () => {
-        setTokenId(nft.token)
-        setCollection(nft.collection)
+        setTokenId(nft)
+        setCollection(Nftcollection)
+
+        console.log(nft)
+        console.log(Nftcollection)
+        
         setTimeout(() => {
             setLocation(loc)
+            console.log("registerInContext", collection)
         }, 1000);
     }
 
     const triggerRegister = async () => {
-        setTokenId(nft.token)
-        setCollection(nft.collection)
-        await GetUser(nft.token, nft.collection)
+        setTokenId(nft)
+        setCollection(Nftcollection)
+        await GetUser(nft, Nftcollection)
         setLocation(loc)
     }
 
@@ -65,7 +71,7 @@ export default function Card({ nft }) {
         if (nft == null) return
         try {
             const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
-            const getUser = await gameContract.getUser(nft, collection)
+            const getUser = await gameContract.getUser(nft, toBytes(collection, { size: 32 }))
             let loc = ethers.decodeBytes32String(getUser[2])
             setLoc(loc)
             let id = ethers.toNumber(getUser[0])
@@ -78,9 +84,7 @@ export default function Card({ nft }) {
             setCstage(Cstage)
             let Crevive = getUser[5]
             setCrevive(Crevive)
-            let  col = getUser[6]
-            setCollection(col);
-
+            setCollection(collection)
         } catch (e) {
             console.error(e)
         }
@@ -88,13 +92,14 @@ export default function Card({ nft }) {
 
     const getMingleData = async () => {
         setLoading(true)
-        let type = await GetMingleMetadata(nft.token, provider)
+        //let type = await GetMingleMetadata(nft, provider)
         //let surviveChance = await mingleType(type)
         try {
-            let sign = await Sign(nft.token, nft.collection, signer)
-            setTokenId(nft.token)
-            setCollection(nft.collection)
+            let sign = await Sign(nft, Nftcollection, signer)
+            setTokenId(nft)
+            setCollection(Nftcollection)
             let w = await sign.wait()
+            console.log("getMingleMetadata", collection)
             setLocation("patio")
             
             
@@ -106,17 +111,17 @@ export default function Card({ nft }) {
 
     return (
         <div key={id} className="rounded-xl border border-gray-400 font-[family-name:var(--font-hogfish)]">
-            {nft.collection == "collection1" && (
+            {Nftcollection == "collection1" && (
                 <>
-                    <Image className='rounded-lg' src={"https://d9emswcmuvawb.cloudfront.net/PFP" + nft.token + ".png"} alt={id} width={200} height={200} />
+                    <Image className='rounded-lg' src={"https://d9emswcmuvawb.cloudfront.net/PFP" + nft + ".png"} alt={id} width={200} height={200} />
                 </>
             )
             }
-            {nft.collection == "collection2" && 
+            {Nftcollection == "collection2" && 
                 (
                     <>
-                        <Image className='rounded-lg' src={"https://bafybeifrjmhpuf34cv6sy4lqhs5gmmusznpunyfik3rqoqfi73abpcpnbi.ipfs.dweb.link/" + nft.token + ".jpg"} alt={id} width={200} height={200} />
-                    </>
+                        <Image className='rounded-lg' src={"https://bafybeifrjmhpuf34cv6sy4lqhs5gmmusznpunyfik3rqoqfi73abpcpnbi.ipfs.w3s.link/" + nft + ".jpg"} alt={id} width={200} height={200} />
+                    </> 
                 )
             }
             
@@ -139,11 +144,11 @@ export default function Card({ nft }) {
                 ) : (
                     <>
                         <p className="pt-1"># {nft + " "}
-                            <span className={mstatus == true ? "text-green-500" : "text-red-500"}  >
-                                {mstatus == true ? "Alive" : "Dead"}
+                            <span className={mstatus != 4 ? "text-green-500" : "text-red-500"}  >
+                                {mstatus != 4 ? "Alive" : "Dead"}
                             </span>
                         </p>
-                        {mstatus == true && (
+                        {mstatus != 4 && (
                             <button type="button" onClick={registerInContext} className="border border-1 border-black px-1 pt-2 rounded-xl mb-1 bg-slate-300">
                                 {"Continue"}
                             </button>

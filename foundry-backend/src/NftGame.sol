@@ -113,11 +113,6 @@ contract NftGame {
     // mapping to user struct
     mapping(bytes32 => mapping(uint256 => User)) private s_users;
 
-    // Receiver variables
-    uint256 public constant MINIMUM_USD = 0.1 ether;
-    address[] private s_funders;
-    mapping(address => uint256) private s_addressToAmountFunded;
-
     ////////////////////// creation of contract to set the Owner //////////////////////
     constructor(address nftPlayerAddress_1, address nftPlayerAddress_2) {
         i_owner = msg.sender;
@@ -156,15 +151,6 @@ contract NftGame {
     modifier noContract { // this won't allow external contracts to interact with functions
         if (tx.origin != msg.sender) revert NftGame__NoExternalContractInteractionAllowed();
         _;
-    }
-
-    function fund() public payable {
-        require(
-            msg.value >= MINIMUM_USD,
-            "You need to spend more ETH!"
-        );
-        s_addressToAmountFunded[msg.sender] += msg.value;
-        s_funders.push(msg.sender);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -234,29 +220,26 @@ contract NftGame {
     function register(uint256 _nft, uint256 _wormLvl, bytes32 _location, bytes32 _collection) external payable gameHasStarted notPaused noContract returns (bool) {
         
         if (msg.value < s_gameCost) revert  NftGame__IncorrectAmount();
-        
-        bytes32 collection;
+
         User memory user;
 
         if (_collection == COLLECTION1){
-            collection = COLLECTION1;
-            user = s_users[collection][_nft];
+            user = s_users[COLLECTION1][_nft];
             if (ERC721(i_nftPlayersAddress_1).ownerOf(_nft) != msg.sender) revert NftGame__NftNotOwned();
             if (user.nftId == _nft && user.collection == COLLECTION1 && user.status == GameState.PLAYING) revert NftGame__NftIdRegistered();
             if (user.nftId == _nft && user.collection == COLLECTION1 && user.status == GameState.DEAD) revert NftGame__NftIsDead();
-            user = User(_nft, GameState.PLAYING, _location, _wormLvl, 0, true, collection);
+            user = User(_nft, GameState.PLAYING, _location, _wormLvl, 0, true, COLLECTION1);
             s_users[COLLECTION1][_nft] = user;
             s_registros.push(user);
             return true;
 
         } else if (_collection == COLLECTION2) {
-            collection = COLLECTION2;
-            user = s_users[collection][_nft];
+            user = s_users[COLLECTION2][_nft];
             if (ERC721(i_nftPlayersAddress_2).ownerOf(_nft) != msg.sender) revert NftGame__NftNotOwned();
             if (user.nftId == _nft && user.collection == COLLECTION2 && user.status == GameState.PLAYING) revert NftGame__NftIdRegistered();
             if (user.nftId == _nft && user.collection == COLLECTION2 && user.status == GameState.DEAD) revert NftGame__NftIsDead();
-            user = User(_nft, GameState.PLAYING, _location, _wormLvl, 0, true, collection);
-            s_users[COLLECTION1][_nft] = user;
+            user = User(_nft, GameState.PLAYING, _location, _wormLvl, 0, true, COLLECTION2);
+            s_users[COLLECTION2][_nft] = user;
             s_registros.push(user);
             return true;
         } else revert NftGame__WrongCollection();
@@ -269,28 +252,26 @@ contract NftGame {
         
         if (msg.value < s_gameCost) revert  NftGame__IncorrectAmount();
         
-        bytes32 collection;
         User memory user = s_users[_collection][_nft];
 
         if (user.nftId == 0) {
             if (_collection == COLLECTION1){
-            collection = COLLECTION1;
+
             if (ERC721(i_nftPlayersAddress_1).ownerOf(_nft) != msg.sender) revert NftGame__NftNotOwned();
             if (user.nftId == _nft && user.collection == COLLECTION1 && user.status == GameState.PLAYING) revert NftGame__NftIdRegistered();
             if (user.nftId == _nft && user.collection == COLLECTION1 && user.status == GameState.DEAD) revert NftGame__NftIsDead();
-            user = User(_nft, GameState.PLAYING, _location, _wormLvl, 0, true, collection);
+            user = User(_nft, GameState.PLAYING, _location, _wormLvl, 0, true, COLLECTION1);
             s_users[COLLECTION1][_nft] = user;
             s_registros.push(user);
             return true;
 
             } else if (_collection == COLLECTION2) {
-                collection = COLLECTION2;
-                user = s_users[collection][_nft];
+
                 if (ERC721(i_nftPlayersAddress_2).ownerOf(_nft) != msg.sender) revert NftGame__NftNotOwned();
                 if (user.nftId == _nft && user.collection == COLLECTION2 && user.status == GameState.PLAYING) revert NftGame__NftIdRegistered();
                 if (user.nftId == _nft && user.collection == COLLECTION2 && user.status == GameState.DEAD) revert NftGame__NftIsDead();
-                user = User(_nft, GameState.PLAYING, _location, _wormLvl, 0, true, collection);
-                s_users[COLLECTION1][_nft] = user;
+                user = User(_nft, GameState.PLAYING, _location, _wormLvl, 0, true, COLLECTION2);
+                s_users[COLLECTION2][_nft] = user;
                 s_registros.push(user);
                 return true;
             } else revert NftGame__WrongCollection();
@@ -300,7 +281,6 @@ contract NftGame {
             User memory userToRegister;
 
             if (_collection == COLLECTION1){
-                collection = COLLECTION1;
                 if (ERC721(i_nftPlayersAddress_1).ownerOf(_nft) != msg.sender) revert NftGame__NftNotOwned();
                 if (user.nftId == _nft && user.collection == COLLECTION1 && user.status == GameState.PLAYING) revert NftGame__NftIdRegistered();
                 if (user.nftId == _nft && user.collection == COLLECTION1 && user.status == GameState.DEAD) revert NftGame__NftIsDead();
@@ -311,14 +291,12 @@ contract NftGame {
                 return true;
 
             } else if (_collection == COLLECTION2) {
-                collection = COLLECTION2;
-                user = s_users[collection][_nft];
                 if (ERC721(i_nftPlayersAddress_2).ownerOf(_nft) != msg.sender) revert NftGame__NftNotOwned();
                 if (user.nftId == _nft && user.collection == COLLECTION2 && user.status == GameState.PLAYING) revert NftGame__NftIdRegistered();
                 if (user.nftId == _nft && user.collection == COLLECTION2 && user.status == GameState.DEAD) revert NftGame__NftIsDead();
-                s_users[COLLECTION1][_nft].location = _location;
-                s_users[COLLECTION1][_nft].status = GameState.PLAYING;
-                userToRegister = s_users[COLLECTION1][_nft];
+                s_users[COLLECTION2][_nft].location = _location;
+                s_users[COLLECTION2][_nft].status = GameState.PLAYING;
+                userToRegister = s_users[COLLECTION2][_nft];
                 s_registros.push(userToRegister);
                 return true;
             } else revert NftGame__WrongCollection();
@@ -358,10 +336,16 @@ contract NftGame {
     }
 
     ////////////////////// Get the address of the NFTs playing
-    function getPlayingNFTsAddresses() external view gameHasStarted returns (address, address) {
+    function getPlayingNFTsAddress1() external view gameHasStarted returns (address) {
         if (i_nftPlayersAddress_1 == address(0)) revert NftGame__NoNFTsPlayersAddress();
         if (i_nftPlayersAddress_2 == address(0)) revert NftGame__NoNFTsPlayersAddress();
-        return (i_nftPlayersAddress_1, i_nftPlayersAddress_2);
+        return i_nftPlayersAddress_1;
+    }
+
+    function getPlayingNFTsAddress2() external view gameHasStarted returns (address) {
+        if (i_nftPlayersAddress_1 == address(0)) revert NftGame__NoNFTsPlayersAddress();
+        if (i_nftPlayersAddress_2 == address(0)) revert NftGame__NoNFTsPlayersAddress();
+        return i_nftPlayersAddress_2;
     }
 
     ////////////////////// Get all registered users
@@ -427,19 +411,18 @@ contract NftGame {
         if (ERC721(nftAddress).ownerOf(_nft) != msg.sender) revert NftGame__MingleNotOwned();
         if (userToCheck.revive == false) revert NftGame__MingleCannotRevive();
 
-        User storage user = s_users[_collection][_nft];
-        uint256 yourChanceToRevive = user.wormLvl;
+        uint256 yourChanceToRevive = userToCheck.wormLvl;
         uint256 decition = randomchoices() + 1;
         if (decition <= yourChanceToRevive) {
             
-            user.revive = false;
+            s_users[_collection][_nft].revive = false;
             emit MayahuelRevivedYou(_nft);
             return true;
 
         } else {
-            user.revive = false;
-            user.status = GameState.DEAD;
-            user.location = DEAD_LOCATION;
+            s_users[_collection][_nft].revive = false;
+            s_users[_collection][_nft].status = GameState.DEAD;
+            s_users[_collection][_nft].location = DEAD_LOCATION;
             return false;
         }
         
@@ -520,24 +503,23 @@ contract NftGame {
             num = 25;
         } else revert NftGame__WrongChoiceInput();
 
-        User storage user = s_users[_collection][_nft];
         uint256 randomNumber = randomchoices() + 1; 
         if (randomNumber > num) {
-            user.status = GameState.PLAYING;
-            user.location = _location;
-            user.stage ++;
+            s_users[_collection][_nft].status = GameState.PLAYING;
+            s_users[_collection][_nft].location = _location;
+            s_users[_collection][_nft].stage ++;
 
-            if (user.stage == 6){
-                user.status = GameState.FINAL_BATTLE;
+            if (s_users[_collection][_nft].stage == 6){
+                s_users[_collection][_nft].status = GameState.FINAL_BATTLE;
             }
             return true;
-        } else if (randomNumber <= num && user.revive == true) {
+        } else if (randomNumber <= num && userToCheck.revive == true) {
 
             return reviveMingle(_nft, _collection);
 
-        } else if (randomNumber <= num && user.revive == false) {
-            user.status = GameState.DEAD;
-            user.location = DEAD_LOCATION;
+        } else if (randomNumber <= num && userToCheck.revive == false) {
+            s_users[_collection][_nft].status = GameState.DEAD;
+            s_users[_collection][_nft].location = DEAD_LOCATION;
             return false;
         }
         return false;
@@ -566,25 +548,24 @@ contract NftGame {
         if (s_gamePaused == false) revert NftGame__GameMustBePaused();
 
         uint256 percentageToDie = 80;
-        User storage user = s_users[_collection][_nft];
         uint256 randomNumer = randomchoices() + 1;
         if (randomNumer > percentageToDie) {
-            user.status = GameState.IN_RAFFLE;
-            user.location = _location;
-            user.stage ++;
+            s_users[_collection][_nft].status = GameState.IN_RAFFLE;
+            s_users[_collection][_nft].location = _location;
+            s_users[_collection][_nft].stage ++;
 
-            s_minglesForRaffle.push(user);
+            s_minglesForRaffle.push(s_users[_collection][_nft]);
 
             return true;
 
-        } else if (randomNumer <= percentageToDie && user.revive == true) {
+        } else if (randomNumer <= percentageToDie && userToCheck.revive == true) {
                 
             return reviveMingle(_nft, _collection);
 
-        } else if (randomNumer <= percentageToDie && user.revive == false) {
+        } else if (randomNumer <= percentageToDie && userToCheck.revive == false) {
 
-            user.status = GameState.DEAD;
-            user.location = DEAD_LOCATION;
+            s_users[_collection][_nft].status = GameState.DEAD;
+            s_users[_collection][_nft].location = DEAD_LOCATION;
             return false;
 
         }
@@ -715,24 +696,4 @@ contract NftGame {
     function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
-
-    ////////////////////////////////////////////////////////////////
-    ////////////////////// Receive and Fallback //////////////////////
-    // Ether is sent to contract
-    //      is msg.data empty?
-    //          /   \
-    //         yes  no
-    //         /     \
-    //    receive()?  fallback()
-    //     /   \
-    //   yes   no
-    //  /        \
-    //receive()  fallback()
-
-    // Function to receive Ether. msg.data must be empty
-    receive() external payable {fund();}
-
-    // Fallback function is called when msg.data is not empty
-    fallback() external payable {fund();}
-
 }

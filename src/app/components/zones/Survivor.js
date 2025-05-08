@@ -112,7 +112,7 @@ export default function Survivor() {
     if (nft == null) return
     try {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
-      const getUser = await gameContract.getUser(nft, collection)
+      const getUser = await gameContract.getUser(nft, toBytes(collection, { size: 32 }))
       let loc = ethers.decodeBytes32String(getUser[2])
       setLoc(loc)
       let id = ethers.toNumber(getUser[0])
@@ -125,7 +125,6 @@ export default function Survivor() {
       setCstage(Cstage)
       let Crevive = getUser[5]
       setCrevive(Crevive)
-      setCollection(getUser[6])
 
     } catch (e) {
       console.error(e)

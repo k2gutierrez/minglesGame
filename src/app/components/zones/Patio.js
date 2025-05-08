@@ -51,7 +51,7 @@ export default function Patio() {
 
   useEffect(() => {
     GetUser(tokenId, collection)
-    console.log(counter)
+    console.log(collection)
     if (counter > 0) {
       setTimeout(() => {
         check(tokenId, collection)
@@ -104,7 +104,7 @@ export default function Patio() {
     if (nft == null) return
     try {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
-      const getUser = await gameContract.getUser(nft, collection)
+      const getUser = await gameContract.getUser(nft,  toBytes(collection, { size: 32 }))
       let loc = ethers.decodeBytes32String(getUser[2])
       setLoc(loc)
       let id = ethers.toNumber(getUser[0])
@@ -117,7 +117,6 @@ export default function Patio() {
       setCstage(Cstage)
       let Crevive = getUser[5]
       setCrevive(Crevive)
-      setCollection(getUser[6])
       if (counter > 0) {
         setLocation(loc)
       }
@@ -143,10 +142,10 @@ export default function Patio() {
           {message != "" && (<p className="mt-2 text-red-600 text-md font-[family-name:var(--font-hogfish)]">You died! but...</p>)}
           {message != "" && (<p className="mt-1 mx-10 text-green-600 text-md font-[family-name:var(--font-hogfish)]">{message}</p>)}
           <p className="mt-8 text-black text-md font-[family-name:var(--font-hogfish)]">{message == "" ? "YOU'VE ENTERED THE PATIO" : "YOU'RE STILL IN THE PATIO"}</p>
-          {collection == "collection1" && (
+          {collection === "collection1" && (
             <Image className="mt-3 rounded-2xl" src={"https://d9emswcmuvawb.cloudfront.net/PFP" + tokenId + ".png"} alt="Mingle" width={60} height={60} />
           )}
-          {collection == "collection2" && (
+          {collection === "collection2" && (
             <Image className="mt-3 rounded-2xl" src={"https://bafybeifrjmhpuf34cv6sy4lqhs5gmmusznpunyfik3rqoqfi73abpcpnbi.ipfs.w3s.link/" + tokenId + ".jpg"} alt="Mingle" width={60} height={60} />
           )}
           <p className="mt-5 mx-10 text-black text-sm font-[family-name:var(--font-PRESSURA)]">The raid has started. You entered the agave field. It's scary af.</p>

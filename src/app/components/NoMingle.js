@@ -21,7 +21,9 @@ export default function NoMingle() {
     location,
     setLocation,
     setMingle,
-    mingle
+    mingle,
+    collection,
+    setCollection
   } = useContext(WalletContext);
 
   const [token, setToken] = useState(null)
@@ -40,7 +42,7 @@ export default function NoMingle() {
     if (token == null) return
     try {
       const gameContract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
-      const getUser = await gameContract.getUser(token)
+      const getUser = await gameContract.getUser(token, toBytes(collection, { size: 32 }))
       
       let loc = ethers.decodeBytes32String(getUser[2])
       setLoc(loc)

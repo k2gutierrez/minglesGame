@@ -85,7 +85,7 @@ export default function Home() {
       setChain(chainID.toString())
       const sepoliaNetworkId = "11155111"
       const apeChainId = "33139"
-      const _contract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT_SEPOLIA, gameABI, provider)
+      const _contract = new ethers.Contract(process.env.NEXT_PUBLIC_GAME_CONTRACT, gameABI, provider)
       setContract(_contract)
 
       setIsConnected(true);
@@ -107,7 +107,7 @@ export default function Home() {
   }
 
   async function getMingles() {
-    const mingles_curtis = `https://api-curtis.reservoir.tools/users/${userAddress}/tokens/v10?contract=0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E&sortDirection=asc&limit=200`
+    const mingles_curtis = `https://api-curtis.reservoir.tools/users/${userAddress}/tokens/v10?contract=0x9AD70bAE14e13BD39E92b88fd767a9F9370Dc63f&sortDirection=asc&limit=200`
     const mingles_ape = `https://api-apechain.reservoir.tools/users/${userAddress}/tokens/v10?contract=0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E&sortDirection=asc&limit=200`
     //api-apechain
     const options = {
@@ -120,8 +120,10 @@ export default function Home() {
       .request(options)
       .then(res => {
         let data1 = res.data
-        setMingle({tokens: data1, collection: "collection1"})
-        setLocation("mingles")
+        setMingle(data1)
+        setTimeout(() => {
+          setLocation("mingles")
+        }, 1500);
       })
       .catch(err => console.error(err));
   }
@@ -140,15 +142,18 @@ export default function Home() {
       .request(options)
       .then(res => {
         let data1 = res.data
-        setGsApe({tokens: data1, collection: "collection2"})
-        setLocation("mingles")
+        setGsApe(data1)
+        setTimeout(() => {
+          setLocation("mingles")
+        }, 1500);
+        
       })
       .catch(err => console.error(err));
   }
 
   async function getCollections() {
-    getMingles();
-    getGsApe();
+    await getMingles();
+    await getGsApe();
   }
 
   return (
