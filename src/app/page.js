@@ -74,7 +74,7 @@ export default function Home() {
     }
 
     try {
-      const provider = new ethers.providers.JsonRpcProvider(process.env.CURTIS_RPC_URL)
+      const provider = new ethers.JsonRpcProvider(process.env.CURTIS_RPC_URL)
 
       //const provider = new BrowserProvider(window.ethereum);
       setProvider(provider)
